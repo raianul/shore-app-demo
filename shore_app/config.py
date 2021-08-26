@@ -23,6 +23,7 @@ class DefaultConfig(BaseConfig):
 
     DEBUG = True
 
+    DB_NAME = 'shoreapp'
     MAIL_HOST = ""
     FROM_ADDR = ""
     TO_ADDRS = [""]
@@ -30,13 +31,14 @@ class DefaultConfig(BaseConfig):
     MAIL_PASSWORD = ""
 
     # MYSQL
-    SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/shoreapp?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/%s?charset=utf8' % DB_NAME
 
 
 class TestConfig(BaseConfig):
+    DB_NAME = 'shoreapp_test'
     TESTING = True
     CSRF_ENABLED = False
     WTF_CSRF_ENABLED = False
 
     # MYSQL
-    SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/shoreapp_test?charset=utf8'
+    SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/%s?charset=utf8' % DB_NAME

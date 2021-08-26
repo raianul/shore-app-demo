@@ -2,3 +2,5 @@ Flask==2.0.1
 Flask-SQLAlchemy==2.5.1
 mysqlclient==1.4.6
 ipdb==0.13.9
+Flask-RESTful
+Flask-Testing==0.8.1

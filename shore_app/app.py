@@ -5,6 +5,7 @@ from flask import Flask, jsonify
 
 from shore_app.config import DefaultConfig
 from shore_app.extensions import db
+from shore_app.utils import CustomJSONEncoder
 
 # For import *
 __all__ = ['create_app']
@@ -17,7 +18,9 @@ def create_app(config=None, app_name=None):
         app_name = config.PROJECT
 
     app = Flask(app_name, instance_relative_config=True)
+    app.json_encoder = CustomJSONEncoder
     configure_app(app, config)
+    configure_blueprints(app)
     configure_extensions(app)
     configure_logging(app)
     return app
@@ -25,6 +28,11 @@ def create_app(config=None, app_name=None):
 
 def configure_app(app, config=None):
     app.config.from_object(config)
+
+
+def configure_blueprints(app):
+    from shore_app.api import api
+    app.register_blueprint(api)
 
 
 def configure_extensions(app):
