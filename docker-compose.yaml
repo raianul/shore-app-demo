@@ -3,6 +3,8 @@ version: '2.1'
 services:
     shore-app:
         container_name: shore-app
+        stdin_open: true
+        tty: true
         build: .
         stdin_open: true
         tty: true
