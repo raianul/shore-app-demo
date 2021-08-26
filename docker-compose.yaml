@@ -1,0 +1,26 @@
+version: '2.1'
+
+services:
+    shore-app:
+        container_name: shore-app
+        build: .
+        stdin_open: true
+        tty: true
+        ports:
+            - "5000:5000"
+        volumes:
+            - .:/code
+        depends_on:
+            - shore-app-db
+    shore-app-db:
+        container_name: shore-app-db
+        image: mysql
+        ports:
+            - "3306"
+        environment:
+          MYSQL_ROOT_PASSWORD: zxc90zxc
+          MYSQL_DATABASE: shoreapp
+          MYSQL_USER: shore
+          MYSQL_PASSWORD: qwe90qwe
+        healthcheck:
+            test: mysql -uroot -pzxc90zxc -e 'select 1'
