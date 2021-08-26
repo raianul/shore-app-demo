@@ -1,1 +1,1 @@
-from .app import app
+from shore_app.app import create_app
