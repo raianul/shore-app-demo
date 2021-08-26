@@ -9,7 +9,6 @@ RUN mkdir /var/log/shore_app
 RUN pip3 install -e .
 # CMD python3 create_tables.py
 CMD python3 create_database.py
-CMD python3 test.py
 CMD python3 -m shore_app.app
 
 

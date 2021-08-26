@@ -16,6 +16,12 @@ INSTANCE_FOLDER_PATH = os.path.join('/var/log', 'shore_app')
 STRING_LEN = 64
 
 
+class AbstractAttribute(object):
+    def __get__(self, obj, type):
+        raise NotImplementedError(
+            "Abstract attribute should be implemented in subclass")
+
+
 def get_current_time():
     return datetime.datetime.utcnow()
 

@@ -20,7 +20,7 @@ def create_app(config=None, app_name=None):
     app = Flask(app_name, instance_relative_config=True)
     app.json_encoder = CustomJSONEncoder
     configure_app(app, config)
-    configure_blueprints(app)
+    configure_api(app)
     configure_extensions(app)
     configure_logging(app)
     return app
@@ -33,6 +33,13 @@ def configure_app(app, config=None):
 def configure_blueprints(app):
     from shore_app.api import api
     app.register_blueprint(api)
+    # app.register_blueprint(sub_api)
+
+
+def configure_api(app):
+    from shore_app.api.views import api
+    api.init_app(app)
+    # sub_api.init_app(app)
 
 
 def configure_extensions(app):

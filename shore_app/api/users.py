@@ -1,15 +1,11 @@
 import json
 from flask import Blueprint, request, jsonify, abort
-from flask_restful import Api, Resource
+from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
 from shore_app.extensions import db
 from shore_app.models import User
 from shore_app.utils import commit_or_rollback
-
-
-api = Blueprint('api', __name__, url_prefix='/api')
-api_wrap = Api(api)
 
 
 class UserItem(Resource):
@@ -68,7 +64,3 @@ def _set_attributes(user, user_json):
             except ValueError as e:
                 abort(400, str(e))
     return user
-
-
-api_wrap.add_resource(UserItems, '/users')
-api_wrap.add_resource(UserItem, '/user/<int:user_id>')
