@@ -42,7 +42,9 @@ class UserItems(Resource):
 
     def get(self):
         users = User.query.all()
-        return jsonify(User.serialize_list(users))
+        users = [{x: d[x] for x in d if x != 'subscribtions'}
+                 for d in User.serialize_list(users)]
+        return jsonify(users)
 
     def post(self):
         user_json = request.get_json(force=True)
