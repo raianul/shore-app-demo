@@ -43,6 +43,8 @@ class SubscriptionItem(Resource):
         return jsonify(sub)
 
 
+# https://open.api.ebay.com/shopping?callname=FindProducts&responseencoding=XML&appid=SayedKab-shoreapp-SBX-21d98cfe6-67df03b3&siteid=0&version=967&QueryKeywords=harry%20potter&AvailableItemsOnly=true&MaxEntries=2
+
 class SubscriptionItems(Resource):
 
     def get(self):

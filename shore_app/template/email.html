@@ -1,0 +1,25 @@
+<p>Hello {{name}},</p>
+
+<p>This is your daily product updates - for search phrase - {{phrase}}</p>
+<p>Updated on - {{response.Timestamp}}</p>
+
+<table>
+    <tbody>
+        <tr>
+            <td>Product</td>
+            <td>Price</td>
+            <td>Ending Time</td>
+        </tr>
+        {% for resp in response.SearchResult %}
+        <tr>
+            <td><a href="{{resp.ViewItemURLForNaturalSearch}}">{{resp.Title}}</a></td>
+            <td>{{resp.ConvertedCurrentPrice.Value}} {{resp.ConvertedCurrentPrice.CurrencyID}}</td>
+            <td>{{resp.EndTime}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>Best,</p>
+<p>ShoreApp Demo</p>
+<p>raianul.kabir@gmail.net</p>

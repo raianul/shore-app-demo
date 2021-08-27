@@ -13,3 +13,4 @@ develop-eggs
 version.txt
 Dockerfile.default
 __pycache__
+celerybeat-schedule

@@ -24,17 +24,23 @@ class DefaultConfig(BaseConfig):
     DEBUG = True
 
     DB_NAME = 'shoreapp'
-    MAIL_HOST = ""
-    FROM_ADDR = ""
-    TO_ADDRS = [""]
-    MAIL_USERNAME = ""
-    MAIL_PASSWORD = ""
+
+    # EMAIL SETTINGS
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USERNAME = 'pranto157@gmail.com'
+    MAIL_PASSWORD = 'Pr@nto261984'
 
     # MYSQL
     SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/%s?charset=utf8' % DB_NAME
 
+    # Redis
+    CELERY_BROKER_URL = 'redis://redis:6379'
+    CELERY_RESULT_BACKEND = 'redis://redis:6379'
+
     # EBAY Host
-    EBAY_HOST = 'https://api.sandbox.ebay.com/'
+    EBAY_HOST = 'https://api.sandbox.ebay.com/shopping'
 
     # EBAY API Params
     EBAY_API_PARAMS = {

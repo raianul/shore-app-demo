@@ -1,13 +1,15 @@
+
 import string
 import random
 import os
 import json
 import datetime
 
+from flask_mail import Message
 from sqlalchemy.exc import DBAPIError, IntegrityError
 from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.inspection import inspect
-
+from flask import render_template
 
 # Instance folder path, make it independent.
 INSTANCE_FOLDER_PATH = os.path.join('/var/log', 'shore_app')
@@ -66,3 +68,15 @@ class Serializer(object):
     @staticmethod
     def serialize_list(l):
         return [m.serialize() for m in l]
+
+
+def send_mail(mail, subject, user, response):
+    try:
+        msg = Message(subject,
+                      sender="pranto157@gmail.com",
+                      recipients=[user.email])
+        msg.html = render_template(
+            'email.html', response=response, name=user.name)
+        mail.send(msg)
+    except Exception:
+        raise

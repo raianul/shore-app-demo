@@ -4,7 +4,7 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask, jsonify
 
 from shore_app.config import DefaultConfig
-from shore_app.extensions import db
+from shore_app.extensions import db, celery, mail
 from shore_app.utils import CustomJSONEncoder
 
 # For import *
@@ -16,8 +16,8 @@ def create_app(config=None, app_name=None):
 
     if app_name is None:
         app_name = config.PROJECT
-
-    app = Flask(app_name, instance_relative_config=True)
+    app = Flask(app_name, instance_relative_config=True,
+                template_folder='template')
     app.json_encoder = CustomJSONEncoder
     configure_app(app, config)
     configure_api(app)
@@ -44,6 +44,8 @@ def configure_api(app):
 
 def configure_extensions(app):
     db.init_app(app)
+    celery.init_app(app)
+    mail.init_app(app)
 
 
 def configure_logging(app):
@@ -71,6 +73,7 @@ app = create_app(DefaultConfig)
 def status():
     db.session.execute('select 1').scalar()
     data = {'status': 'OK'}
+    send_mail(mail)
     return jsonify(data), 200
 
 

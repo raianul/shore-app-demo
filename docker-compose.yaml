@@ -6,6 +6,7 @@ services:
         stdin_open: true
         tty: true
         build: .
+        # command: celery worker --app=shore_app.tasks.celery --loglevel=info
         stdin_open: true
         tty: true
         ports:
@@ -14,6 +15,7 @@ services:
             - .:/code
         depends_on:
             - shore-app-db
+            - redis
     shore-app-db:
         container_name: shore-app-db
         image: mysql
@@ -28,3 +30,6 @@ services:
         volumes:
             - .:/docker-entrypoint-initdb.d
 
+    redis:
+        container_name: shore-redis
+        image: redis:6-alpine
