@@ -33,6 +33,18 @@ class DefaultConfig(BaseConfig):
     # MYSQL
     SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/%s?charset=utf8' % DB_NAME
 
+    # EBAY Host
+    EBAY_HOST = 'https://api.sandbox.ebay.com/'
+
+    # EBAY API Params
+    EBAY_API_PARAMS = {
+        'MaxEntries': 20,
+        'AvailableItemsOnly': True,
+        'responseencoding': 'JSON',
+        'appid': 'SayedKab-shoreapp-SBX-21d98cfe6-67df03b3',
+        'version': '1157'
+    }
+
 
 class TestConfig(BaseConfig):
     DB_NAME = 'shoreapp_test'
