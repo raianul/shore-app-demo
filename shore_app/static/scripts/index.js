@@ -1,7 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import HelloWorld from "./HelloWorld";
-import User from "./User";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import AppRouter from './router/AppRouter';
 
-ReactDOM.render(<HelloWorld />, document.getElementById("react-root"));
-ReactDOM.render(<User />, document.getElementById("user-list"));
+ReactDOM.render(<AppRouter />, document.getElementById('root'));

@@ -18,7 +18,9 @@ class UserItem(Resource):
 
     def get(self, user_id):
         user = self._get_user(user_id)
-        return jsonify(user.serialize())
+        user = user.serialize()
+        del user['subscribtions']
+        return jsonify(user)
 
     def delete(self, user_id):
         user = self._get_user(user_id)
@@ -35,7 +37,10 @@ class UserItem(Resource):
             commit_or_rollback(db.session)
         except IntegrityError as e:
             abort(400, e.orig.args[1])
-        return jsonify(user.serialize())
+
+        user = user.serialize()
+        del user['subscribtions']
+        return jsonify(user)
 
 
 class UserItems(Resource):
