@@ -4,6 +4,9 @@ import Header from '../components/Header';
 import AddUser from '../components/AddUser';
 import UserList from '../components/UserList';
 import EditUser from '../components/EditUser';
+import SubscriptionList from '../components/SubscriptionList';
+import AddSubscription from '../components/AddSubscription';
+import EditSubscription from '../components/EditSubscription';
 
 
 const AppRouter = () => {
@@ -14,12 +17,25 @@ const AppRouter = () => {
         <div className="main-content">
           <Switch>
             <Route component={UserList} path="/" exact={true} />
-            <Route component={AddUser} path="/add" />
+            <Route component={AddUser} path="/user/add" />
+            <Route component={AddSubscription} path="/subscription/add" />
             <Route
               render={(props) => (
                 <EditUser {...props} />
               )}
-              path="/edit/:id"
+              path="/user/edit/:id"
+            />
+            <Route
+              render={(props) => (
+                <SubscriptionList {...props} />
+              )}
+              path="/user/:id/subscriptions"
+            />
+            <Route
+              render={(props) => (
+                <EditSubscription {...props} />
+              )}
+              path="/subscription/edit/:id"
             />
             <Route component={() => <Redirect to="/" />} />
           </Switch>

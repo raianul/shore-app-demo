@@ -48,7 +48,11 @@ class SubscriptionItem(Resource):
 class SubscriptionItems(Resource):
 
     def get(self):
-        subs = Subscription.query.all()
+        user_id = request.args.get('user_id')
+        query = Subscription.query
+        if user_id:
+            query = query.filter_by(user_id=user_id)
+        subs = query.all()
         response = [{x: d[x] for x in d if x != 'user'}
                     for d in Subscription.serialize_list(subs)]
         return jsonify(response)
