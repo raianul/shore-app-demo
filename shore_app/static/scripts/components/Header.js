@@ -11,9 +11,13 @@ const Header = () => {
         <NavLink to="/" className="link" activeClassName="active" exact>
           User List
         </NavLink>
-        &nbsp;
-        <NavLink to="/add" className="link" activeClassName="active">
+        |
+        <NavLink to="/user/add" className="link" activeClassName="active">
           Add User
+        </NavLink>
+        |
+        <NavLink to="/subscription/add" className="link" activeClassName="active">
+          Add Subscription
         </NavLink>
       </div>
     </header>
