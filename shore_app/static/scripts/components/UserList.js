@@ -52,7 +52,8 @@ class UserList extends React.Component {
               <td>{item.name}</td>
               <td>{item.email}</td>
               <td>
-                <Link to={'/edit/' + item.id} className="link" activeClassName="active" exact>Edit</Link> |
+                <Link to={'/user/' + item.id + '/subscriptions'} className="link" activeClassName="active" exact>Subscriptions</Link> |
+                <Link to={'/user/edit/' + item.id} className="link" activeClassName="active" exact>Edit</Link> |
                 <Link value={item.id} onClick={(e) => this.handleClick(e, item.id)}>Delete</Link>
               </td>
             </tr>
@@ -65,7 +66,6 @@ class UserList extends React.Component {
 
   async handleClick(e, id) {
     e.preventDefault();
-    console.log(id);
     const response = await fetchAPI("DELETE", '/api/user/' + id);
     if (response.ok) {
       window.location.reload();
