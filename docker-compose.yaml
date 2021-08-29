@@ -3,11 +3,14 @@ version: '2.1'
 services:
     shore-app:
         container_name: shore-app
+        image: shore-app
         stdin_open: true
         tty: true
         build: .
-        # command: celery worker --app=shore_app.tasks.celery --loglevel=info
         stdin_open: true
+        environment:
+            - FLASK_MAIL=disabled
+            - DEBUG=False
         tty: true
         ports:
             - "5000:5000"
@@ -16,6 +19,26 @@ services:
         depends_on:
             - shore-app-db
             - redis
+    worker:
+        container_name: shore-app-worker
+        build: .
+        image: shore-app-worker
+        command: celery -A shore_app.tasks.celery worker --concurrency=20 --loglevel=INFO
+        depends_on:
+          - beat
+          - redis
+        restart: 'no'
+        volumes: 
+          - .:/code
+    beat:
+        build: .
+        image: shore-app-beat
+        command: celery -A shore_app.tasks.celery beat --loglevel=INFO
+        depends_on: 
+          - redis
+        restart: 'no'
+        volumes: 
+          - .:/code
     shore-app-db:
         container_name: shore-app-db
         image: mysql
@@ -28,7 +51,7 @@ services:
         healthcheck:
             test: mysql -uroot -pzxc90zxc -e 'select 1'
         volumes:
-            - .:/docker-entrypoint-initdb.d
+            - ./sql:/docker-entrypoint-initdb.d
 
     redis:
         container_name: shore-redis
