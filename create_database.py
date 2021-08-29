@@ -1,6 +1,6 @@
 import sqlalchemy
 
-from shore_app.models import User
+from shore_app.models import User, Subscription, Product
 
 from shore_app.app import create_app
 from shore_app.extensions import db

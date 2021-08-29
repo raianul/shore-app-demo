@@ -23,7 +23,6 @@ services:
     shore-app-db:
         container_name: shore-app-db
         image: mysql
-        # command: --init-file /docker-entrypoint-initdb.d/1-init.sql
         ports:
             - "3306"
         environment:
@@ -41,7 +40,7 @@ services:
         container_name: shore-app-worker
         build: .
         image: shore-app-worker
-        command: celery -A shore_app.tasks.celery worker --concurrency=20 --loglevel=INFO
+        command: celery -A shore_app.tasks.celery worker --concurrency=20 -Q check_subscription,create_product --loglevel=INFO
         depends_on:
           - shore-app-db
           - shore-app-beat
