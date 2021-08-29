@@ -1,35 +1,38 @@
 from datetime import datetime, timedelta
 import os
 import time
-
-# from celery import Celery
+from sqlalchemy.exc import IntegrityError
 
 from shore_app.extensions import celery, db, mail
 from shore_app.config import DefaultConfig
-from shore_app.models import Subscription
+from shore_app.models import Subscription, Product, User
 from shore_app.utils import send_mail, get_current_time, commit_or_rollback
 from shore_app.app import app
 from shore_app.extensions import db
 from shore_app.api.ebay import Ebay
 
 
-# celery = Celery(__name__)
 celery.conf.broker_url = DefaultConfig.CELERY_BROKER_URL
 celery.conf.result_backend = DefaultConfig.CELERY_RESULT_BACKEND
 
 
 CELERYBEAT_SCHEDULE = {
-    'run-every-sixty-seconds': {
-        'task': 'shore_app.tasks.create_task',
-        'schedule': 60
+    'check_subscription': {
+        'task': 'shore_app.tasks.check_subscription',
+        'schedule': app.config.get('SUB_SCHEDULE_TIME')
+    },
+    'create_product': {
+        'task': 'shore_app.tasks.create_product',
+        'schedule': app.config.get('PROD_SCHEDULE_TIME'),
+        'args': (['sub'], ['response'])
     },
 }
 
 celery.conf.beat_schedule = CELERYBEAT_SCHEDULE
 
 
-@celery.task
-def create_task():
+@celery.task(bind=True,  queue='check_subscription')
+def check_subscription(self):
     for sub in Subscription.query.all():
         if sub.sent_email and _sent_email_notification(sub):
             app.logger.info("Processing alert email for  - %s" %
@@ -56,11 +59,40 @@ def _get_ebay_response(query):
     return response
 
 
+@celery.task
+def create_product(sub, response):
+    user = User.query.get(sub['user_id'])
+    products = []
+    app.logger.info("Creating Product from search result")
+    for resp in response['SearchResult']:
+        product, created = Product.get_or_create(phrases=sub['phrases'], item_id=resp['ItemID'], defaults={
+            'title': resp['Title'],
+            'end_time': datetime.strptime(resp['EndTime'], "%Y-%m-%dT%H:%M:%S.%f%z"),
+            'price': resp['ConvertedCurrentPrice']['Value'],
+            'currency': resp['ConvertedCurrentPrice']['CurrencyID']
+        })
+
+        if not created:
+            product.last_price = product.price
+            product.price = resp['ConvertedCurrentPrice']['Value']
+            commit_or_rollback(db.session)
+
+        if product not in user.products:
+            products.append(product)
+    user.products.extend(products)
+    try:
+        commit_or_rollback(db.session)
+    except IntegrityError as e:
+        app.logger.error(e)
+
+
 def _sent_email_notification(sub):
     response = _get_ebay_response(sub.phrases)
-
     if not response:
         return
+
+    create_product.apply_async(
+        args=[sub.serialize(), response], queue='create_product')
 
     subject = "Your %s minutes update from Ebay" % sub.interval
     try:
@@ -72,8 +104,3 @@ def _sent_email_notification(sub):
         return
 
     return True
-
-    # celery -A shore_app.tasks.celery worker --loglevel=info
-    # celery -A shore_app.tasks.celery beat --loglevel=info
-
-    # https://api.sandbox.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=SayedKab-shoreapp-SBX-21d98cfe6-67df03b3&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=harry%20potter%20phoenix&paginationInput.entriesPerPage=2

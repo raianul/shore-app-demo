@@ -19,7 +19,6 @@ class SubscriptionItem(Resource):
     def get(self, sub_id):
         sub = self._get_subscription(sub_id)
         sub = sub.serialize()
-        del sub['user']
         return jsonify(sub)
 
     def delete(self, sub_id):
@@ -39,11 +38,8 @@ class SubscriptionItem(Resource):
             abort(400, e.orig.args[1])
 
         sub = sub.serialize()
-        del sub['user']
         return jsonify(sub)
 
-
-# https://open.api.ebay.com/shopping?callname=FindProducts&responseencoding=XML&appid=SayedKab-shoreapp-SBX-21d98cfe6-67df03b3&siteid=0&version=967&QueryKeywords=harry%20potter&AvailableItemsOnly=true&MaxEntries=2
 
 class SubscriptionItems(Resource):
 
@@ -74,7 +70,6 @@ class SubscriptionItems(Resource):
             abort(400, e.orig.args[1])
 
         sub = sub.serialize()
-        del sub['user']
         return jsonify(sub)
 
 

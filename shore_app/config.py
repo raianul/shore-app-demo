@@ -37,6 +37,8 @@ class DefaultConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/%s?charset=utf8' % DB_NAME
 
     # Redis
+    SUB_SCHEDULE_TIME = 60  # in seconds
+    PROD_SCHEDULE_TIME = 60  # in seconds
     CELERY_BROKER_URL = 'redis://redis:6379'
     CELERY_RESULT_BACKEND = 'redis://redis:6379'
 
