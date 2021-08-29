@@ -3,13 +3,10 @@ ADD . /code
 WORKDIR /code
 RUN mkdir /var/log/shore_app
 RUN pip3 install -e .
-CMD bash runner.sh
 # RUN pip3 install -r requirements.txt
 # RUN export FLASK_APP="shore_app:app"
 # RUN export FLASK_ENV=development
 # RUN flask run
-RUN pip3 install -e .
-CMD bash runner.sh
 # CMD python3 create_tables.py
 # CMD python3 create_database.py
 # CMD python3 -m shore_app.app
