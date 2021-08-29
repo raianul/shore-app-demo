@@ -1,4 +1,4 @@
-version: '2.1'
+version: '3.9'
 
 services:
     shore-app:
@@ -9,36 +9,17 @@ services:
         build: .
         stdin_open: true
         environment:
-            - FLASK_MAIL=disabled
+            - FLASK_MAIL=enabled
             - DEBUG=False
+        command: bash runner.sh
         tty: true
         ports:
             - "5000:5000"
         volumes:
             - .:/code
         depends_on:
-            - shore-app-db
-            - redis
-    worker:
-        container_name: shore-app-worker
-        build: .
-        image: shore-app-worker
-        command: celery -A shore_app.tasks.celery worker --concurrency=20 --loglevel=INFO
-        depends_on:
-          - beat
-          - redis
-        restart: 'no'
-        volumes: 
-          - .:/code
-    beat:
-        build: .
-        image: shore-app-beat
-        command: celery -A shore_app.tasks.celery beat --loglevel=INFO
-        depends_on: 
-          - redis
-        restart: 'no'
-        volumes: 
-          - .:/code
+            shore-app-db:
+              condition: service_healthy
     shore-app-db:
         container_name: shore-app-db
         image: mysql
@@ -49,10 +30,43 @@ services:
             - MYSQL_ROOT_PASSWORD=zxc90zxc
             - MYSQL_ROOT_HOST=%
         healthcheck:
-            test: mysql -uroot -pzxc90zxc -e 'select 1'
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            interval: 20s
+            timeout: 20s
+            retries: 10
+            start_period: 20s
         volumes:
             - ./sql:/docker-entrypoint-initdb.d
-
+    shore-app-worker:
+        container_name: shore-app-worker
+        build: .
+        image: shore-app-worker
+        command: celery -A shore_app.tasks.celery worker --concurrency=20 --loglevel=INFO
+        depends_on:
+          - shore-app-db
+          - shore-app-beat
+          - redis
+        restart: 'no'
+        volumes: 
+          - .:/code
+        depends_on:
+          shore-app-db:
+            condition: service_healthy
+    shore-app-beat:
+        container_name: shore-app-beat
+        build: .
+        image: shore-app-beat
+        command: celery -A shore_app.tasks.celery beat --loglevel=INFO
+        depends_on: 
+          - redis
+        restart: 'no'
+        volumes: 
+          - .:/code
+        depends_on:
+          redis:
+            condition: service_healthy
     redis:
         container_name: shore-redis
         image: redis:6-alpine
+        healthcheck:
+          test: redis-cli PING
