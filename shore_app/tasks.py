@@ -34,10 +34,11 @@ def create_task():
         if sub.sent_email and _sent_email_notification(sub):
             app.logger.info("Processing alert email for  - %s" %
                             sub.user.email)
-            sub.last_email_sent = get_current_time
-            commit_or_rollback(db.session)
+            sub.last_email_sent = get_current_time()
             app.logger.info(
                 "Successfully updated last email sent time for  - %s" % sub.user.email)
+
+    commit_or_rollback(db.session)
 
 
 def _get_ebay_response(query):
@@ -63,7 +64,8 @@ def _sent_email_notification(sub):
 
     subject = "Your %s minutes update from Ebay" % sub.interval
     try:
-        send_mail(mail, subject, sub.user, response)
+        if os.environ['FLASK_MAIL'] != 'disabled':
+            send_mail(mail, subject, sub.user, response)
         app.logger.info("Successfully sent email to - %s" % sub.user.email)
     except Exception:
         app.logger.error("Mail sent failed to - %s" % sub.user.email)
@@ -71,8 +73,7 @@ def _sent_email_notification(sub):
 
     return True
 
+    # celery -A shore_app.tasks.celery worker --loglevel=info
+    # celery -A shore_app.tasks.celery beat --loglevel=info
 
-# celery -A shore_app.tasks.celery worker --loglevel=info
-# celery -A shore_app.tasks.celery beat --loglevel=info
-
-# https://api.sandbox.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=SayedKab-shoreapp-SBX-21d98cfe6-67df03b3&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=harry%20potter%20phoenix&paginationInput.entriesPerPage=2
+    # https://api.sandbox.ebay.com/services/search/FindingService/v1?OPERATION-NAME=findItemsByKeywords&SERVICE-VERSION=1.0.0&SECURITY-APPNAME=SayedKab-shoreapp-SBX-21d98cfe6-67df03b3&RESPONSE-DATA-FORMAT=JSON&REST-PAYLOAD&keywords=harry%20potter%20phoenix&paginationInput.entriesPerPage=2

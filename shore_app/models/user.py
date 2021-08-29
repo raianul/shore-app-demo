@@ -16,7 +16,7 @@ class User(db.Model, Serializer):
     create_at = Column(db.DateTime, nullable=False, default=get_current_time)
     update_at = Column(db.DateTime, onupdate=get_current_time)
     subscribtions = db.relationship('Subscription', backref=db.backref('user', lazy='joined'),
-                                    lazy='selectin')
+                                    lazy='selectin', cascade="all, delete-orphan")
 
     def serialize(self):
         return Serializer.serialize(self)
