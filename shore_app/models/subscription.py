@@ -23,7 +23,10 @@ class Subscription(db.Model, Serializer):
     update_at = Column(db.DateTime, onupdate=get_current_time)
 
     def serialize(self):
-        return Serializer.serialize(self)
+        sub = Serializer.serialize(self)
+        if 'user' in sub:
+            del sub['user']
+        return sub
 
     @property
     def sent_email(self):

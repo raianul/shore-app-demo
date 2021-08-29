@@ -19,4 +19,9 @@ class User(db.Model, Serializer):
                                     lazy='selectin', cascade="all, delete-orphan")
 
     def serialize(self):
-        return Serializer.serialize(self)
+        user = Serializer.serialize(self)
+        if 'subscriptions' in user:
+            del user['subscriptions']
+        if 'products' in user:
+            del user['products']
+        return user

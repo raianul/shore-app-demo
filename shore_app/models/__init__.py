@@ -1,3 +1,4 @@
 
-from shore_app.models.user import User
-from shore_app.models.subscription import Subscription
+from .user import User
+from .subscription import Subscription
+from .product import Product
