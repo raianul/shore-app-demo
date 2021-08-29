@@ -19,7 +19,6 @@ class BaseTestCase(TestCase):
 
     def tearDown(self):
         """Clean db session and drop all tables."""
-
         db.session.remove()
         db.drop_all()
 

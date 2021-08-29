@@ -67,7 +67,7 @@ class SubscriptionItems(Resource):
             abort(404, "User not found for id -  %s" % sub.user_id)
 
         try:
-            user.subscribtions.append(sub)
+            user.subscriptions.append(sub)
             db.session.add(sub)
             commit_or_rollback(db.session)
         except IntegrityError as e:
