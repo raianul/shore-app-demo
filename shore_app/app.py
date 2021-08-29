@@ -33,13 +33,11 @@ def configure_app(app, config=None):
 def configure_blueprints(app):
     from shore_app.api import api
     app.register_blueprint(api)
-    # app.register_blueprint(sub_api)
 
 
 def configure_api(app):
     from shore_app.api.views import api
     api.init_app(app)
-    # sub_api.init_app(app)
 
 
 def configure_extensions(app):
@@ -60,13 +58,16 @@ def configure_logging(app):
     )
     app.logger.addHandler(info_file_handler)
 
-    # # Testing
-    # app.logger.info("testing info.")
-    # app.logger.warn("testing warn.")
-    # app.logger.error("testing error.")
-
 
 app = create_app(DefaultConfig)
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return jsonify({
+        'status': 404,
+        'message': '404 Not Found'
+    })
 
 
 @app.route('/status')
@@ -82,4 +83,4 @@ def hello_world():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(host="0.0.0.0", debug=DefaultConfig.DEBUG)
