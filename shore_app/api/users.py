@@ -19,7 +19,7 @@ class UserItem(Resource):
     def get(self, user_id):
         user = self._get_user(user_id)
         user = user.serialize()
-        del user['subscribtions']
+        del user['subscriptions']
         return jsonify(user)
 
     def delete(self, user_id):
@@ -39,7 +39,7 @@ class UserItem(Resource):
             abort(400, e.orig.args[1])
 
         user = user.serialize()
-        del user['subscribtions']
+        del user['subscriptions']
         return jsonify(user)
 
 
@@ -47,7 +47,7 @@ class UserItems(Resource):
 
     def get(self):
         users = User.query.all()
-        users = [{x: d[x] for x in d if x != 'subscribtions'}
+        users = [{x: d[x] for x in d if x != 'subscriptions'}
                  for d in User.serialize_list(users)]
         return jsonify(users)
 

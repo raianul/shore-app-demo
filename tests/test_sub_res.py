@@ -20,7 +20,7 @@ class TestSubscribeResource(BaseTestCase):
             subscribe=True)
         db.session.add(user_data)
         sub_data = Subscription(phrases='test', interval=2)
-        user_data.subscribtions.append(sub_data)
+        user_data.subscriptions.append(sub_data)
 
         db.session.add(sub_data)
         db.session.commit()
