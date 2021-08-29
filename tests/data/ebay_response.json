@@ -1,0 +1,72 @@
+{
+  "Timestamp": "2021-08-29T08:44:21.754Z",
+  "Ack": "Success",
+  "Build": "E1157_CORE_APILW2_19110892_R1",
+  "Version": "1157",
+  "SearchResult": [
+    {
+      "ItemArray": {
+        "Item": [
+          {
+            "ItemID": "110537672646",
+            "EndTime": "2021-09-02T04:40:44.000Z",
+            "ViewItemURLForNaturalSearch": "https://cgi.sandbox.ebay.com/Harry-Potter-and-Philosophers-Stone-TEST-ITEM-DONT-BUY-II-/110537672646",
+            "ListingType": "Chinese",
+            "PrimaryCategoryID": "261186",
+            "PrimaryCategoryName": "Books & Magazines:Books",
+            "BidCount": 0,
+            "ConvertedCurrentPrice": {
+              "Value": 1.0,
+              "CurrencyID": "USD"
+            },
+            "ListingStatus": "Active",
+            "TimeLeft": "P3DT19H56M23S",
+            "Title": "Harry Potter and the Philosopher's Stone: TEST ITEM DONT BUY II",
+            "ShippingCostSummary": {
+              "ShippingServiceCost": {
+                "Value": 0.0,
+                "CurrencyID": "USD"
+              },
+              "ShippingType": "Flat",
+              "ListedShippingServiceCost": {
+                "Value": 0.0,
+                "CurrencyID": "USD"
+              }
+            }
+          },
+          {
+            "ItemID": "110537660904",
+            "EndTime": "2021-08-30T00:34:29.000Z",
+            "ViewItemURLForNaturalSearch": "https://cgi.sandbox.ebay.com/Harry-Potter-and-Philosophers-Stone-TEST-ITEM-DONT-BUY-II-/110537660904",
+            "ListingType": "Chinese",
+            "PrimaryCategoryID": "261186",
+            "PrimaryCategoryName": "Books & Magazines:Books",
+            "BidCount": 0,
+            "ConvertedCurrentPrice": {
+              "Value": 1.0,
+              "CurrencyID": "USD"
+            },
+            "ListingStatus": "Active",
+            "TimeLeft": "PT15H50M8S",
+            "Title": "Harry Potter and the Philosopher's Stone: TEST ITEM DONT BUY II",
+            "ShippingCostSummary": {
+              "ShippingServiceCost": {
+                "Value": 2.5,
+                "CurrencyID": "USD"
+              },
+              "ShippingType": "Flat",
+              "ListedShippingServiceCost": {
+                "Value": 2.5,
+                "CurrencyID": "USD"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "PageNumber": 1,
+  "TotalPages": 3,
+  "TotalItems": 6,
+  "ItemSearchURL": "http://search.sandbox.ebay.com/ws/search/SaleSearch?DemandData=1&fsop=32&satitle=Harry+Potter"
+}
