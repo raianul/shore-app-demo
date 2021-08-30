@@ -1,9 +1,5 @@
 # shore-app-demo
-This is a test project - 
- - service to manage alerts for products prices on Ebay.com, the service will allow a user
-to create an alert so he can receive updates about specific products search phrases delivered to
-his email address.
-- Let user know the product insights according to search results.
+This is a test project. To know more about the project and its details please follow this [wiki page](https://github.com/pranto157/shore-app-demo/wiki/Project-Details)
 
 ## Configuration 
 By default it will have the [DefaultConfig](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L20-L53) and for test runner it will use [TestConfig](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L56-L63)

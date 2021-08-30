@@ -5,3 +5,4 @@ dist
 .eggs
 __pycache__
 node_modules
+docs
