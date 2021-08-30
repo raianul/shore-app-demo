@@ -40,7 +40,7 @@ def create_product_from_ebay(self):
 @celery.task(bind=True,  queue='check_subscription_and_sent_alert')
 def check_subscription_and_sent_alert(self):
     for sub in Subscription.query.all():
-        if sub.valid_for_email and _sent_email_notification(sub):
+        if sub.valid_for_alert and _sent_email_notification(sub):
             app.logger.info("Processing alert email for  - %s" %
                             sub.user.email)
             sub.last_email_sent = get_current_time()

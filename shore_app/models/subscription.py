@@ -30,7 +30,7 @@ class Subscription(db.Model, Serializer):
         return sub
 
     @property
-    def valid_for_email(self):
+    def valid_for_alert(self):
         now = datetime.utcnow()
         interval = (now - self.last_email_sent).total_seconds() / 60.0
         if interval >= self.interval:

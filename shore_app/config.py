@@ -28,8 +28,8 @@ class DefaultConfig(BaseConfig):
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True
-    MAIL_USERNAME = ''
-    MAIL_PASSWORD = ''
+    MAIL_USERNAME = 'pranto157@gmail.com'
+    MAIL_PASSWORD = 'Pr@nto261984'
 
     # MYSQL
     SQLALCHEMY_DATABASE_URI = 'mysql://shore:qwe90qwe@shore-app-db/%s?charset=utf8' % DB_NAME
