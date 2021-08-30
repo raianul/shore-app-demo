@@ -34,3 +34,16 @@ By default it will have the [DefaultConfig](https://github.com/pranto157/shore-a
   - Turn on [debug mode](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L22), set `DEBUG=True` 
   - docker logs - `docker logs -f [container-name]`
   - Log file in `/var/log/shore_app` directory, using LogRotation. 
+
+## Email 
+
+![](https://github.com/pranto157/Pink/blob/master/shore-email1.png)
+
+## App View
+ - Home Page
+ 
+![](https://github.com/pranto157/Pink/blob/master/h1.png)
+![](https://github.com/pranto157/Pink/blob/master/h2.png)
+![](https://github.com/pranto157/Pink/blob/master/h3.png)
+![](https://github.com/pranto157/Pink/blob/master/h4.png)
+
