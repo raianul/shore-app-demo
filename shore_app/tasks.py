@@ -1,14 +1,12 @@
-from datetime import datetime, timedelta
 import os
-import time
+from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
+from shore_app.app import app
 from shore_app.extensions import celery, db, mail
 from shore_app.config import DefaultConfig
-from shore_app.models import Subscription, Product, User
+from shore_app.models import Subscription, Product
 from shore_app.utils import send_mail, get_current_time, commit_or_rollback
-from shore_app.app import app
-from shore_app.extensions import db
 from shore_app.api.ebay import Ebay
 
 
@@ -17,24 +15,32 @@ celery.conf.result_backend = DefaultConfig.CELERY_RESULT_BACKEND
 
 
 CELERYBEAT_SCHEDULE = {
-    'check_subscription': {
-        'task': 'shore_app.tasks.check_subscription',
+    'create_product_from_ebay': {
+        'task': 'shore_app.tasks.create_product_from_ebay',
         'schedule': app.config.get('SUB_SCHEDULE_TIME')
     },
-    'create_product': {
-        'task': 'shore_app.tasks.create_product',
+    'check_subscription_and_sent_alert': {
+        'task': 'shore_app.tasks.check_subscription_and_sent_alert',
         'schedule': app.config.get('PROD_SCHEDULE_TIME'),
-        'args': (['sub'], ['response'])
     },
 }
 
 celery.conf.beat_schedule = CELERYBEAT_SCHEDULE
 
 
-@celery.task(bind=True,  queue='check_subscription')
-def check_subscription(self):
+@celery.task(bind=True,  queue='create_product_from_ebay')
+def create_product_from_ebay(self):
     for sub in Subscription.query.all():
-        if sub.sent_email and _sent_email_notification(sub):
+        ebay_resp = _get_ebay_response(sub.phrases)
+        if not ebay_resp:
+            continue
+        create_product(sub, ebay_resp)
+
+
+@celery.task(bind=True,  queue='check_subscription_and_sent_alert')
+def check_subscription_and_sent_alert(self):
+    for sub in Subscription.query.all():
+        if sub.valid_for_alert and _sent_email_notification(sub):
             app.logger.info("Processing alert email for  - %s" %
                             sub.user.email)
             sub.last_email_sent = get_current_time()
@@ -45,6 +51,7 @@ def check_subscription(self):
 
 
 def _get_ebay_response(query):
+    app.logger.info("Fetching results from ebay....")
     response = Ebay('findItemsAdvanced').search(query=query)
     if response.get('Ack') == 'Failure':
         app.logger.error(response)
@@ -59,46 +66,45 @@ def _get_ebay_response(query):
     return response
 
 
-@celery.task
 def create_product(sub, response):
-    user = User.query.get(sub['user_id'])
     products = []
-    app.logger.info("Creating Product from search result")
+
     for resp in response['SearchResult']:
-        product, created = Product.get_or_create(phrases=sub['phrases'], item_id=resp['ItemID'], defaults={
+        product, created = Product.get_or_create(item_id=resp['ItemID'], defaults={
             'title': resp['Title'],
+            'link': resp['ViewItemURLForNaturalSearch'],
             'end_time': datetime.strptime(resp['EndTime'], "%Y-%m-%dT%H:%M:%S.%f%z"),
             'price': resp['ConvertedCurrentPrice']['Value'],
             'currency': resp['ConvertedCurrentPrice']['CurrencyID']
         })
 
+        product.last_price = product.price
         if not created:
-            product.last_price = product.price
             product.price = resp['ConvertedCurrentPrice']['Value']
             commit_or_rollback(db.session)
 
-        if product not in user.products:
+        if product not in sub.products:
             products.append(product)
-    user.products.extend(products)
+    sub.products.extend(products)
     try:
+        app.logger.info("Creating/Updating Product from search result")
         commit_or_rollback(db.session)
     except IntegrityError as e:
         app.logger.error(e)
 
 
 def _sent_email_notification(sub):
-    response = _get_ebay_response(sub.phrases)
-    if not response:
-        return
 
-    create_product.apply_async(
-        args=[sub.serialize(), response], queue='create_product')
+    product_insights = Product.product_insights(sub.products)
+
+    if not product_insights:
+        return False
 
     if app.config.get('SENT_EMAIL', False):
-        subject = "Your %s minutes update from Ebay" % sub.interval
         try:
-            if os.environ['FLASK_MAIL'] != 'disabled':
-                send_mail(mail, subject, sub.user, response)
+            subject = "Your %s minutes update from Ebay for %s" % (
+                sub.interval, sub.phrases)
+            send_mail(mail, subject, sub.user, sub.phrases, product_insights)
             app.logger.info("Successfully sent email to - %s" % sub.user.email)
         except Exception:
             app.logger.error("Mail sent failed to - %s" % sub.user.email)

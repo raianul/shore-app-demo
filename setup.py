@@ -18,7 +18,7 @@ setup(
     include_package_data=True,
     install_requires=install_requires,
     setup_requires=[
-        'setuptools_git==1.1',  # anything tracked in git gets packaged
+        'setuptools_git==1.1',
         'wheel==0.24.0',
     ],
     zip_safe=False,

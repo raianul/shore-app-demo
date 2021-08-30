@@ -55,3 +55,4 @@ wcwidth==0.2.5
 Werkzeug==2.0.1
 httpretty==1.1.4
 Faker==8.12.1
+timeago==1.0.15

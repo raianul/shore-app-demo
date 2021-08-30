@@ -40,7 +40,7 @@ services:
         container_name: shore-app-worker
         build: .
         image: shore-app-worker
-        command: celery -A shore_app.tasks.celery worker --concurrency=20 -Q check_subscription,create_product --loglevel=INFO
+        command: celery -A shore_app.tasks.celery worker --concurrency=20 -Q create_product_from_ebay,check_subscription_and_sent_alert --loglevel=INFO
         depends_on:
           - shore-app-db
           - shore-app-beat

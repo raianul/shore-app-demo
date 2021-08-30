@@ -1,32 +1,30 @@
 import os
 
-from shore_app.utils import make_dir, INSTANCE_FOLDER_PATH
+
+STRING_LEN = 225
 
 
 class BaseConfig(object):
 
     PROJECT = "shore_app"
 
-    # Get app root path, also can use flask.root_path.
-    # ../../config.py
     PROJECT_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
     DEBUG = False
     TESTING = False
 
     ADMINS = ['raianul.kabir@gmail.com']
-
-    LOG_FOLDER = os.path.join(INSTANCE_FOLDER_PATH)
+    LOG_FOLDER = os.path.join(os.path.join('/var/log', 'shore_app'))
 
 
 class DefaultConfig(BaseConfig):
 
-    DEBUG = True
+    DEBUG = False
 
     DB_NAME = 'shoreapp'
 
     # EMAIL SETTINGS
-    SENT_EMAIL = False
+    SENT_EMAIL = True
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True

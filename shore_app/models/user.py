@@ -1,8 +1,9 @@
+from datetime import datetime
 from sqlalchemy import Column
 
 from shore_app.extensions import db
 from shore_app.utils import get_current_time, Serializer
-from shore_app.constants import STRING_LEN
+from shore_app.config import STRING_LEN
 
 
 class User(db.Model, Serializer):
@@ -25,3 +26,12 @@ class User(db.Model, Serializer):
         if 'products' in user:
             del user['products']
         return user
+
+    def valid_subs_for_alert(self):
+        now = datetime.utcnow()
+        subs = []
+        for sub in self.subscriptions:
+            interval = (now - sub.last_email_sent).total_seconds() / 60.0
+            if interval >= sub.interval:
+                subs.append(sub)
+        return subs
