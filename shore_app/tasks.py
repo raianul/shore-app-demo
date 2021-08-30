@@ -94,13 +94,17 @@ def _sent_email_notification(sub):
     create_product.apply_async(
         args=[sub.serialize(), response], queue='create_product')
 
-    subject = "Your %s minutes update from Ebay" % sub.interval
-    try:
-        if os.environ['FLASK_MAIL'] != 'disabled':
-            send_mail(mail, subject, sub.user, response)
-        app.logger.info("Successfully sent email to - %s" % sub.user.email)
-    except Exception:
-        app.logger.error("Mail sent failed to - %s" % sub.user.email)
-        return
+    if app.config.get('SENT_EMAIL', False):
+        subject = "Your %s minutes update from Ebay" % sub.interval
+        try:
+            if os.environ['FLASK_MAIL'] != 'disabled':
+                send_mail(mail, subject, sub.user, response)
+            app.logger.info("Successfully sent email to - %s" % sub.user.email)
+        except Exception:
+            app.logger.error("Mail sent failed to - %s" % sub.user.email)
+            return
+    else:
+        app.logger.info(
+            "DRY MODE: Successfully sent email to - %s" % sub.user.email)
 
     return True
