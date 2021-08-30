@@ -26,10 +26,12 @@ class Subscription(db.Model, Serializer):
         sub = Serializer.serialize(self)
         if 'user' in sub:
             del sub['user']
+        if 'products' in sub:
+            del sub['products']
         return sub
 
     @property
-    def sent_email(self):
+    def valid_for_email(self):
         now = datetime.utcnow()
         interval = (now - self.last_email_sent).total_seconds() / 60.0
         if interval >= self.interval:
