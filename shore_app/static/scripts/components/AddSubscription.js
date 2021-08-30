@@ -24,20 +24,18 @@ class AddSubscription extends React.Component {
         <SubscriptionForm handleOnSubmit={this.handleOnSubmit.bind(this)} />
       </div>
     );
-
   }
 
   async handleOnSubmit(subscription) {
     try {
-      console.log("DFSDF");
-      console.log(subscription);
       const response = await fetchAPI("POST", '/api/subscriptions', subscription);
       if (response.ok) {
         const responJson = await response.json();
         this.props.history.push('/user/' + responJson.user_id + '/subscriptions');
       } else {
+        const resp = await response.json();
         const error = {
-          message: response.statusText
+          message: resp.message
         }
         this.setState({
           isLoaded: false,

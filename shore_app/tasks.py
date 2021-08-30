@@ -1,14 +1,12 @@
-from datetime import datetime, timedelta
 import os
-import time
+from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 
+from shore_app.app import app
 from shore_app.extensions import celery, db, mail
 from shore_app.config import DefaultConfig
-from shore_app.models import Subscription, Product, User
+from shore_app.models import Subscription, Product
 from shore_app.utils import send_mail, get_current_time, commit_or_rollback
-from shore_app.app import app
-from shore_app.extensions import db
 from shore_app.api.ebay import Ebay
 
 
@@ -42,7 +40,7 @@ def create_product_from_ebay(self):
 @celery.task(bind=True,  queue='check_subscription_and_sent_alert')
 def check_subscription_and_sent_alert(self):
     for sub in Subscription.query.all():
-        if sub.valid_for_email and _sent_email_notification(sub):
+        if sub.valid_for_alert and _sent_email_notification(sub):
             app.logger.info("Processing alert email for  - %s" %
                             sub.user.email)
             sub.last_email_sent = get_current_time()

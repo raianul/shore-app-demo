@@ -37,28 +37,30 @@ class EditSubscription extends React.Component {
 
   render() {
     const { error, isLoaded, item } = this.state;
+    let errorDiv = '';
     if (error) {
-      return <div>Error: {error.message}</div>;
+      errorDiv = 'Error: ' + error.message;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
-    } else {
-      return (
-        <div>
-          <SubscriptionForm subscription={item} handleOnSubmit={this.handleOnSubmit.bind(this)} />
-        </div>
-      );
     }
+    return (
+      <div>
+        {errorDiv}
+        <SubscriptionForm subscription={item} handleOnSubmit={this.handleOnSubmit.bind(this)} />
+      </div>
+    );
   }
 
   async handleOnSubmit(subscription) {
-    console.log(subscription);
     const id = this.state.item.id;
+
     const response = await fetchAPI("PUT", '/api/subscription/' + id, subscription);
     if (response.ok) {
       this.props.history.push("/user/" + subscription.user_id + "/subscriptions");
     } else {
+      const resp = await response.json();
       const error = {
-        message: response.statusText
+        message: resp.message
       }
       this.setState({
         isLoaded: false,

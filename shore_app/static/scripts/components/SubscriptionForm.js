@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import UserDropDown from '../components/UserDropDown';
 
 const SubscriptionForm = (props) => {
-  console.log("proop");
-  console.log(props.subscription);
   const [subscription, setSubscription] = useState({
     user_id: props.subscription ? props.subscription.user_id : '',
     interval: props.subscription ? props.subscription.interval : '',
@@ -31,8 +29,6 @@ const SubscriptionForm = (props) => {
         interval,
         phrases,
       };
-      console.log("VAAA");
-      console.log(subscription);
       props.handleOnSubmit(subscription);
     }
     setErrorMsg(errorMsg);
@@ -41,7 +37,6 @@ const SubscriptionForm = (props) => {
   const handleInputChange = (event) => {
 
     const { name, value } = event.target;
-    console.log(value);
     setSubscription((prevState) => ({
       ...prevState,
       [name]: value

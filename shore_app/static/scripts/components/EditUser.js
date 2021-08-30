@@ -37,17 +37,18 @@ class EditUser extends React.Component {
 
   render() {
     const { error, isLoaded, item } = this.state;
+    let errorDiv = '';
     if (error) {
-      return <div>Error: {error.message}</div>;
+      errorDiv = 'Error: ' + error.message;
     } else if (!isLoaded) {
       return <div>Loading...</div>;
-    } else {
-      return (
-        <div>
-          <UserForm user={item} handleOnSubmit={this.handleOnSubmit.bind(this)} />
-        </div>
-      );
     }
+    return (
+      <div>
+        {errorDiv}
+        <UserForm user={item} handleOnSubmit={this.handleOnSubmit.bind(this)} />
+      </div>
+    );
   }
 
   async handleOnSubmit(user) {
@@ -56,13 +57,15 @@ class EditUser extends React.Component {
     if (response.ok) {
       this.props.history.push("/");
     } else {
+      const resp = await response.json()
       const error = {
-        message: response.statusText
+        message: resp.message
       }
       this.setState({
         isLoaded: false,
         error: error
       });
+      // this.props.history.push("/user/edit" + id);
     }
   }
 }

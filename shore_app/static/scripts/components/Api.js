@@ -9,19 +9,7 @@ export default async function fetchAPI(methodType, url, data) {
       },
       body: JSON.stringify(data)
     });
-    console.log("in")
-    console.log(response);
-    // console.log(response.json());
     return response;
-    // wait until request is done
-    // let responseOK = response && response.ok;
-    // if (responseOK) {
-    //   let data = await response.json();
-    //   // do something with data
-    //   return data;
-    // } else {
-    //   return response;
-    // }
   } catch (error) {
     return error
   }

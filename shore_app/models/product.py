@@ -3,9 +3,9 @@ from sqlalchemy import Column
 import timeago
 
 from shore_app.extensions import db
-from sqlalchemy.schema import ForeignKeyConstraint, UniqueConstraint
+from sqlalchemy.schema import UniqueConstraint
 from shore_app.utils import get_current_time, Serializer, commit_or_rollback
-from shore_app.constants import STRING_LEN
+from shore_app.config import STRING_LEN
 
 
 subs_products = db.Table(

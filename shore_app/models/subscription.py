@@ -1,10 +1,9 @@
 from datetime import datetime
 from sqlalchemy import Column
 
-
 from shore_app.extensions import db
 from shore_app.utils import get_current_time, Serializer
-from shore_app.constants import STRING_LEN, ALERT_INTERVAL
+from shore_app.config import STRING_LEN
 
 
 class Subscription(db.Model, Serializer):
@@ -31,7 +30,7 @@ class Subscription(db.Model, Serializer):
         return sub
 
     @property
-    def valid_for_email(self):
+    def valid_for_alert(self):
         now = datetime.utcnow()
         interval = (now - self.last_email_sent).total_seconds() / 60.0
         if interval >= self.interval:
