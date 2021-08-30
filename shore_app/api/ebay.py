@@ -1,3 +1,9 @@
+'''
+This class is responsible to communicate with Ebay API
+callname: ebay api method name
+returns json response from ebay
+'''
+
 import requests
 
 from shore_app.app import app

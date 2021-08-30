@@ -33,8 +33,9 @@ class AddUser extends React.Component {
       if (response.ok) {
         this.props.history.push("/");
       } else {
+        const resp = await response.json()
         const error = {
-          message: response.statusText
+          message: resp.message
         }
         this.setState({
           isLoaded: false,

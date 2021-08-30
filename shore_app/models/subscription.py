@@ -1,10 +1,9 @@
 from datetime import datetime
 from sqlalchemy import Column
 
-
 from shore_app.extensions import db
 from shore_app.utils import get_current_time, Serializer
-from shore_app.constants import STRING_LEN, ALERT_INTERVAL
+from shore_app.config import STRING_LEN
 
 
 class Subscription(db.Model, Serializer):

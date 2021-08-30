@@ -6,8 +6,6 @@ const UserForm = (props) => {
     name: props.user ? props.user.name : '',
     email: props.user ? props.user.email : '',
   });
-  console.log("BANG");
-  console.log(props);
   const [errorMsg, setErrorMsg] = useState('');
   const { name, email } = user;
 

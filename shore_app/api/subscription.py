@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, request, jsonify, abort
+from flask import request, jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 
@@ -31,6 +31,15 @@ class SubscriptionItem(Resource):
         sub_json = request.get_json(force=True)
         sub = Subscription.query.get(sub_id)
         sub = _set_attributes(sub, sub_json)
+
+        if not sub.user_id:
+            abort(400, 'User is requried!')
+
+        try:
+            sub.interval = int(sub.interval)
+        except ValueError:
+            abort(400, 'Interval must be an integer value')
+
         try:
             db.session.add(sub)
             commit_or_rollback(db.session)
@@ -57,6 +66,14 @@ class SubscriptionItems(Resource):
         sub_json = request.get_json(force=True)
         sub = Subscription()
         sub = _set_attributes(sub, sub_json)
+
+        if not sub.user_id:
+            abort(400, 'User is requried!')
+
+        try:
+            sub.interval = int(sub.interval)
+        except ValueError:
+            abort(400, 'Interval must be an integer value')
 
         user = User.query.get(sub.user_id)
         if not user:

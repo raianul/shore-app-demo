@@ -1,5 +1,5 @@
 import json
-from flask import Blueprint, request, jsonify, abort
+from flask import request, jsonify, abort
 from flask_restful import Resource
 from sqlalchemy.exc import IntegrityError
 

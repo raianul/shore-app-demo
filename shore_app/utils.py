@@ -1,4 +1,3 @@
-
 import string
 import random
 import os
@@ -11,12 +10,6 @@ from sqlalchemy.ext.declarative import DeclarativeMeta
 from sqlalchemy.inspection import inspect
 from flask import render_template
 
-# Instance folder path, make it independent.
-INSTANCE_FOLDER_PATH = os.path.join('/var/log', 'shore_app')
-
-# Model
-STRING_LEN = 64
-
 
 class AbstractAttribute(object):
     def __get__(self, obj, type):
@@ -26,18 +19,6 @@ class AbstractAttribute(object):
 
 def get_current_time():
     return datetime.datetime.utcnow()
-
-
-def id_generator(size=10, chars=string.ascii_letters + string.digits):
-    return ''.join(random.choice(chars) for x in range(size))
-
-
-def make_dir(dir_path):
-    try:
-        if not os.path.exists(dir_path):
-            os.mkdir(dir_path)
-    except Exception as e:
-        raise e
 
 
 def commit_or_rollback(session):
