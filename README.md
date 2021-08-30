@@ -10,7 +10,8 @@ By default it will have the [DefaultConfig](https://github.com/pranto157/shore-a
   - For Email Setup, `username` and `password` is required. You can use your gmail credentials but you need to change your Gmail [security settings](https://kb.synology.com/en-global/SRM/tutorial/How_to_use_Gmail_SMTP_server_to_send_emails_for_SRM)
   - If you want to test the app without using the [Email notification](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L27), set `SENT_EMAIL=False`
   - We used `Celery` for task runner with multiple queue. To change the schedule time, here is the [options](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L38-L39)
-  - [Ebay APP](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L51) Id is required, but use mine for test purpose.   
+  - [Ebay APP](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L51) Id is required
+  - Use this one `SayedKab-shoreapp-SBX-21d98cfe6-67df03b3` for test purpose.   
 
 ## Docker-Configuration
   - To run the project from docker, run command - `docker-compose up --build` for the first time
