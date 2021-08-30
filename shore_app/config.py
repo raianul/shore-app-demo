@@ -26,7 +26,7 @@ class DefaultConfig(BaseConfig):
     DB_NAME = 'shoreapp'
 
     # EMAIL SETTINGS
-    SENT_EMAIL = False
+    SENT_EMAIL = True
     MAIL_SERVER = 'smtp.gmail.com'
     MAIL_PORT = 465
     MAIL_USE_SSL = True

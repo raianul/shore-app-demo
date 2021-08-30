@@ -70,13 +70,13 @@ class Serializer(object):
         return [m.serialize() for m in l]
 
 
-def send_mail(mail, subject, user, response):
+def send_mail(mail, subject, user, phrases, product_insights):
     try:
         msg = Message(subject,
                       sender="pranto157@gmail.com",
                       recipients=[user.email])
         msg.html = render_template(
-            'email.html', response=response, name=user.name)
+            'email.html', product_insights=product_insights, name=user.name, phrases=phrases)
         mail.send(msg)
     except Exception:
         raise

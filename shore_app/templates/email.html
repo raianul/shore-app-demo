@@ -1,25 +1,61 @@
 <p>Hello {{name}},</p>
 
-<p>This is your daily product updates - for search phrase - {{phrase}}</p>
-<p>Updated on - {{response.Timestamp}}</p>
+<div>
+    <h4>Here is your ebay search alert for - {{phrases}}</h4>
+    <table>
+        <tbody>
+            <tr>
+                <td>Product</td>
+                <td>Price</td>
+            </tr>
+            {% for product in product_insights.products %}
+            <tr>
+                <td><a href="{{product.link}}">{{product.title}}</a></td>
+                <td>{{product.price}} {{product.currency}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
-<table>
-    <tbody>
-        <tr>
-            <td>Product</td>
-            <td>Price</td>
-            <td>Ending Time</td>
-        </tr>
-        {% for resp in response.SearchResult %}
-        <tr>
-            <td><a href="{{resp.ViewItemURLForNaturalSearch}}">{{resp.Title}}</a></td>
-            <td>{{resp.ConvertedCurrentPrice.Value}} {{resp.ConvertedCurrentPrice.CurrencyID}}</td>
-            <td>{{resp.EndTime}}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div>
+    <h4>Your search insights - </h4>
+    <ul>
+        {% if product_insights.cheaper_product %}
+        <li>
+            Cheapest product from your search -
+            <ol>
+                <li><a href="{{product_insights.cheaper_product.link}}">{{product_insights.cheaper_product.title}} </a>-
+                    {{product_insights.cheaper_product.price}} {{product_insights.cheaper_product.currency}}</li>
+            </ol>
+        </li>
+        {% endif %}
+        {% if product_insights.decrease_products %}
+        <li>
+            Price decrease products from your search -
+            <ol>
+                {% for product in product_insights.decrease_products %}
+                <li><a href="{{product.link}}">{{product.title}}</a> has decreased {{product.percentage}}% -
+                    {{product.diff}}</li>
+                {% endfor %}
+            </ol>
+        </li>
+        {% endif %}
+
+        {% if product_insights.unchange_products %}
+        <li>
+            Price unchange products from your search -
+            <ol>
+                {% for product in product_insights.unchange_products %}
+                <li>Price remain same for the product - <a href="{{product.link}}">{{product.title}}</a> -
+                    {{product.diff}}</li>
+                {% endfor %}
+            </ol>
+        </li>
+        {% endif %}
+    </ul>
+</div>
 
 <p>Best,</p>
 <p>ShoreApp Demo</p>
-<p>raianul.kabir@gmail.net</p>
+<p>raianul.kabir@gmail.com</p>
