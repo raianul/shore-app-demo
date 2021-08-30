@@ -11,7 +11,8 @@ By default it will have the [DefaultConfig](https://github.com/pranto157/shore-a
   - If you want to test the app without using the [Email notification](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L27), set `SENT_EMAIL=False`
   - We used `Celery` for task runner with multiple queue. To change the schedule time, here is the [options](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L38-L39)
   - [Ebay APP](https://github.com/pranto157/shore-app-demo/blob/main/shore_app/config.py#L51) Id is required
-  - Use this one `SayedKab-shoreapp-SBX-21d98cfe6-67df03b3` for test purpose.   
+  - Use this one `SayedKab-shoreapp-SBX-21d98cfe6-67df03b3` for test purpose. 
+  - Please note, its difficult to get data from Ebay sandbox, I use these phrases to get data `Computer`, `Toy`, `Harry Potter`, `Adventure`, `USA`
 
 ## Docker-Configuration
   - To run the project from docker, run command - `docker-compose up --build` for the first time
