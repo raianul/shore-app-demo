@@ -35,14 +35,14 @@ class TestEmailAlert(BaseTestCase):
             datetime.utcnow().year + 1, 1, 1)
 
         for sub in Subscription.query.all():
-            assert sub.sent_email == True
+            assert sub.valid_for_email == True
 
     @mock.patch('shore_app.models.subscription.datetime')
     def test_sent_alert_if_all_interval_not_match(self, mock_dt):
         mock_dt.utcnow.return_value = datetime.utcnow() + timedelta(minutes=1)
 
         for sub in Subscription.query.all():
-            assert sub.sent_email == False
+            assert sub.valid_for_email == False
 
     @mock.patch('shore_app.models.subscription.datetime')
     def test_sent_alert_if_interval_match_only_with_two_min(self, mock_dt):
@@ -54,9 +54,9 @@ class TestEmailAlert(BaseTestCase):
 
         for sub in Subscription.query.all():
             if sub.interval == 2:
-                assert sub.sent_email == True
+                assert sub.valid_for_email == True
             else:
-                assert sub.sent_email == False
+                assert sub.valid_for_email == False
 
     @mock.patch('shore_app.models.subscription.datetime')
     def test_sent_alert_if_interval_match_only_with_ten_min(self, mock_dt):
@@ -74,9 +74,9 @@ class TestEmailAlert(BaseTestCase):
 
         for sub in Subscription.query.all():
             if sub.interval == 10:
-                assert sub.sent_email == True
+                assert sub.valid_for_email == True
             else:
-                assert sub.sent_email == False
+                assert sub.valid_for_email == False
 
     @mock.patch('shore_app.models.subscription.datetime')
     def test_sent_alert_if_interval_match_only_with_thirty_min(self, mock_dt):
@@ -98,9 +98,9 @@ class TestEmailAlert(BaseTestCase):
             timedelta(minutes=30)
         for sub in Subscription.query.all():
             if sub.interval == 30:
-                assert sub.sent_email == True
+                assert sub.valid_for_email == True
             else:
-                assert sub.sent_email == False
+                assert sub.valid_for_email == False
 
     @mock.patch('shore_app.models.subscription.datetime')
     def test_sent_alert_if_interval_match_only_with_ten_and_thirty_min(self, mock_dt):
@@ -122,6 +122,6 @@ class TestEmailAlert(BaseTestCase):
             timedelta(minutes=35)
         for sub in Subscription.query.all():
             if sub.interval in [10, 30]:
-                assert sub.sent_email == True
+                assert sub.valid_for_email == True
             else:
-                assert sub.sent_email == False
+                assert sub.valid_for_email == False
