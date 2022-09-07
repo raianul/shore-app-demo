@@ -1,0 +1,21 @@
+version: 2.1
+setup: true
+orbs:
+  path-filtering: circleci/path-filtering@0.0.1
+jobs:
+  build-test-api:
+    docker:
+      - image: 'cimg/base:2022.01'
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          command: ./run base
+          command: ./run test
+      - run:
+          command: ./run down
+
+      - store_test_results:
+          path: ./test_results/
+      - store_artifacts:
+          path: ./test_results/

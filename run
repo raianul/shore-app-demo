@@ -1,0 +1,92 @@
+#!/bin/bash
+here="$(dirname "${BASH_SOURCE[0]}")"
+
+function compose {
+    docker-compose "$@"
+}
+
+function _compose_exec {
+   compose exec shorepay "$@"
+}
+
+
+function manage {
+    compose run shorepay bash -c "./manage.py" "$@"
+}
+
+function test {
+    mkdir -pv test_results
+    compose run --name test shore-app-demo bash -c "python -m pytest --junitxml=/app/junit.xml -p no:cacheprovider --cov=/app /app --cov-report html:/app/coverage_shorepay --cov-branch" "$@"
+    status=$?
+    docker cp test:/app/coverage_shoreapp ./test_results/coverage_shoreapp
+    docker cp test:/app/junit.xml ./test_results/junit.xml
+    [ $status -eq 0 ]
+}
+
+function shell_plus {
+    manage shell_plus --ipython
+}
+
+function base {
+     compose  build
+}
+
+function dev_server {
+    compose up --build
+}
+
+function upd {
+    compose up -d --build
+}
+
+function logs {
+    compose logs -f --tail="all"
+}
+
+function down {
+    compose down
+}
+
+function shell {
+    _compose_exec bash
+}
+
+function dbshell {
+    _compose_exec_db psql -U inventorum -d inventorum_develop
+}
+
+function infra_init {
+  make -C terraform/globals init
+  make -C terraform/service init
+  make -C terraform/secrets init
+}
+
+function infra_lint {
+  make -C terraform/globals lint
+  make -C terraform/service lint
+  make -C terraform/secrets lint
+}
+
+function infra_plan {
+  make -C terraform/globals plan
+  make -C terraform/service plan
+  make -C terraform/secrets plan
+}
+
+function infra_apply {
+  make -C terraform/globals apply
+  make -C terraform/secrets apply_staging
+  make -C terraform/service apply_staging
+}
+
+function _default {
+    help
+}
+
+function help {
+    echo "$0 <task> <args>"
+    echo "Tasks:"
+    compgen -A function | grep -v -E "^_" |cat -n
+}
+
+"${@:-_default}"
