@@ -1,28 +1,20 @@
 version: 2.1
 setup: true
-orbs:
-  path-filtering: circleci/path-filtering@0.0.1
 jobs:
-  build-test-api:
+  scan:
     docker:
-      - image: 'cimg/base:2022.01'
+      - image: owasp/zap2docker-stable
     steps:
-      - checkout
-      - setup_remote_docker
       - run:
-          command: ./run base
-      - run:
-          command: ./run test
-      - run:
-          command: ./run down
-
-      - store_test_results:
-          path: ./test_results/
+            command: |
+              mkdir /zap/wrk
+              zap-full-scan.py -t https://target-url -r report.html
       - store_artifacts:
-          path: ./test_results/
+          path: /zap/wrk
+          destination: zap-report
 
 workflows:
   version: 2
   circle-ci-workflow:
     jobs:
-      - build-test-api
+      - scan
