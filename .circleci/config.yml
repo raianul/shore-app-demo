@@ -20,3 +20,14 @@ jobs:
           path: ./test_results/
       - store_artifacts:
           path: ./test_results/
+
+workflows:
+  version: 2
+  circle-ci-workflow:
+    jobs:
+      - build-test-api
+      - path-filtering/filter:
+          base-revision: master
+          config-path: .circleci/continue_config.yml
+          mapping: |
+            terraform/.* run-terraform true
