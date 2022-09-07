@@ -11,6 +11,7 @@ jobs:
       - setup_remote_docker
       - run:
           command: ./run base
+      - run:
           command: ./run test
       - run:
           command: ./run down
