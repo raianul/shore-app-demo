@@ -1,10 +1,13 @@
 version: 2.1
 setup: true
+orbs:
+  path-filtering: circleci/path-filtering@0.0.1
 jobs:
-  scan:
+  zap-scan:
     docker:
-      - image: owasp/zap2docker-stable
+      - image: 'owasp/zap2docker-stable'
     steps:
+      - checkout
       - run:
             command: |
               mkdir /zap/wrk
@@ -17,4 +20,26 @@ workflows:
   version: 2
   circle-ci-workflow:
     jobs:
-      - scan
+      - zap-scan
+
+
+# version: 2.1
+# setup: true
+# jobs:
+#   scan:
+#     docker:
+#       - image: owasp/zap2docker-stable
+#     steps:
+#       - run:
+#             command: |
+#               mkdir /zap/wrk
+#               zap-api-scan.py -t https://8bdc-2a02-8109-a180-7448-1eb-199b-7246-3590.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r report.html
+#       - store_artifacts:
+#           path: /zap/wrk
+#           destination: zap-report
+
+# workflows:
+#   version: 2
+#   circle-ci-workflow:
+#     jobs:
+#       - scan
