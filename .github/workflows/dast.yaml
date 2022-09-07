@@ -44,5 +44,5 @@ jobs:
         run: docker pull owasp/zap2docker-weekly
       - name: Run ZAP API Scan
         run: |
-          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://8bdc-2a02-8109-a180-7448-1eb-199b-7246-3590.eu.ngrok.io/api/schema -f openapi --hook=/zap/wrk/zap/hook.py
+          docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://8bdc-2a02-8109-a180-7448-1eb-199b-7246-3590.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/zap/hook.py
         # run: sudo docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t dev-wiki-api.json -f openapi -r test_report_$(date -u +'%Y%m%d').html
