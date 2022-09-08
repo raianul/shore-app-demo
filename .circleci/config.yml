@@ -20,11 +20,14 @@ jobs:
 workflows:
   version: 2
   circle-ci-workflow:
-    jobs:
-      - zap-scan:
-            type: approval
-            requires:
-                - zap-scan:
+    triggers:
+      - schedule:
+          # Every day, 0421Z.
+          cron: "21 4 * * *"
+          filters:
+            branches:
+              only:
+                - main
 
 
 
