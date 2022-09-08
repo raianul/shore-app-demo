@@ -21,7 +21,8 @@ workflows:
   version: 2
   circle-ci-workflow:
     jobs:
-      - zap-scan
+      - zap-scan:
+        type: approval
 
 
 # version: 2.1
