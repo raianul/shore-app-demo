@@ -9,6 +9,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: cp ./.env.example ./.env
+      - run:
             name: ZAP-SCAN
             command: |
               mkdir /zap/wrk
