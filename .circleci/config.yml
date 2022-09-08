@@ -23,6 +23,10 @@ workflows:
     jobs:
       - zap-scan:
             type: approval
+            requires:
+                - zap-scan:
+
+
 
 
 # version: 2.1
