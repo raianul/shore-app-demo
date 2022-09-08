@@ -19,11 +19,11 @@ jobs:
 
 workflows:
   version: 2
-  circle-ci-workflow:
+  schedule-workflow:
     triggers:
       - schedule:
           # Every day, 0421Z.
-          cron: "35 16 * * *"
+          cron: "37 16 * * *"
           filters:
             branches:
               only:
