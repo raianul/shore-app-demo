@@ -28,6 +28,8 @@ workflows:
             branches:
               only:
                 - main
+    jobs:
+      - zap-scan
 
 
 
