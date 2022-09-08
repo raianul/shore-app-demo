@@ -12,7 +12,7 @@ jobs:
             name: ZAP-SCAN
             command: |
               mkdir /zap/wrk
-              zap-api-scan.py -t https://8bdc-2a02-8109-a180-7448-1eb-199b-7246-3590.eu.ngrok.io/api/account -f openapi --hook=hook.py -r report.html 2> /dev/null; (($? == 2)) && echo 'Done' >&2 
+              zap-api-scan.py -t $STAGING_URL -f openapi --hook=hook.py -r report.html
       - store_artifacts:
           path: /zap/wrk
           destination: zap-report
