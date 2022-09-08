@@ -19,6 +19,9 @@ jobs:
 
 workflows:
   version: 2
+  circle-ci-workflow:
+    jobs:
+      - zap-scan
   schedule-workflow:
     triggers:
       - schedule:
