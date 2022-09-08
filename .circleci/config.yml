@@ -23,7 +23,7 @@ workflows:
     triggers:
       - schedule:
           # Every day, 0421Z.
-          cron: "37 16 * * *"
+          cron: "* * * * *"
           filters:
             branches:
               only:
