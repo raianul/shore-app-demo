@@ -22,19 +22,14 @@ jobs:
     docker:
       - image: 'owasp/zap2docker-stable'
     steps:
-      - checkout
-      - run:
-          command: cp ./.env.example ./.env
-      - run:
-            name: ZAP-SCAN
-            command: |
-              mkdir /zap/wrk
-              zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html
-      - store_artifacts:
-          path: /zap/wrk
-          destination: zap-report
-      - notify_slack_error
-      - notify_slack_pass
+      - run: echo "deploy my app"
+      - slack/notify:
+          event: fail
+          mentions: '@EngineeringTeam'
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
   
 
 workflows:
