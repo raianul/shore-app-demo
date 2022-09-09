@@ -24,14 +24,10 @@ jobs:
     steps:
       - run: apt-get install -y sudo
       - checkout
-      - run:
-          name: ZAP-SCAN
-          command: |
-            mkdir /zap/wrk
-            zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html
-      - store_artifacts:
-          path: /zap/wrk
-          destination: zap-report
+      - run: echo "deploy my app"
+      # - store_artifacts:
+      #     path: /zap/wrk
+      #     destination: zap-report
       - slack/notify:
           event: fail
           template: basic_fail_1
