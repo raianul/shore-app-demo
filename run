@@ -23,6 +23,11 @@ function test {
     [ $status -eq 0 ]
 }
 
+function zaptest {
+    mkdir /zap/wrk
+    compose run --name zaptest zaproxy bash -c "zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html"
+}
+
 function shell_plus {
     manage shell_plus --ipython
 }

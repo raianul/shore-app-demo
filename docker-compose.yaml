@@ -7,14 +7,12 @@ services:
         stdin_open: true
         tty: true
         build: .
-        stdin_open: true
         environment:
             - FLASK_MAIL=enabled
             - DEBUG=False
         command: bash runner.sh
-        tty: true
         ports:
-            - "5000:5000"
+            - "5002:5000"
         volumes:
             - .:/code
         depends_on:
@@ -36,36 +34,15 @@ services:
             start_period: 20s
         volumes:
             - ./sql:/docker-entrypoint-initdb.d
-    shore-app-worker:
-        container_name: shore-app-worker
-        build: .
-        image: shore-app-worker
-        command: celery -A shore_app.tasks.celery worker --concurrency=20 -Q create_product_from_ebay,check_subscription_and_sent_alert --loglevel=INFO
-        depends_on:
-          - shore-app-db
-          - shore-app-beat
-          - redis
-        restart: 'no'
-        volumes: 
-          - .:/code
-        depends_on:
-          shore-app-db:
-            condition: service_healthy
-    shore-app-beat:
-        container_name: shore-app-beat
-        build: .
-        image: shore-app-beat
-        command: celery -A shore_app.tasks.celery beat --loglevel=INFO
-        depends_on: 
-          - redis
-        restart: 'no'
-        volumes: 
-          - .:/code
-        depends_on:
-          redis:
-            condition: service_healthy
-    redis:
-        container_name: shore-redis
-        image: redis:6-alpine
-        healthcheck:
-          test: redis-cli PING
+    zaproxy:
+      container_name: zaproxy
+      image: owasp/zap2docker-weekly
+      command: zap.sh -daemon -port 8090 -host 0.0.0.0
+      ports:
+      # ZAP is running on 8090, we want it to be accessible by our tools        
+        - "8090:8090"
+      depends_on:
+        - shore-app
+      volumes:
+          - ./hook.py:/zap/hook.py
+

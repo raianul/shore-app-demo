@@ -20,14 +20,19 @@ commands:
 jobs:
   zap-scan:
     docker:
-      - image: 'owasp/zap2docker-bare'
+      - image: 'cimg/base:2022.01'
     steps:
-      - run: apt install curl
       - checkout
-      - run: echo "deploy my app"
-      # - store_artifacts:
-      #     path: /zap/wrk
-      #     destination: zap-report
+      - setup_remote_docker
+      - run:
+          command: ./run base
+      - run:
+          command: ./run test
+      - run:
+          command: ./run down
+      - store_artifacts:
+          path: /zap/wrk
+          destination: zap-report
       - slack/notify:
           event: fail
           template: basic_fail_1
