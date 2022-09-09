@@ -24,8 +24,7 @@ function test {
 }
 
 function zaptest {
-    mkdir /zap/wrk
-    compose run --name zaptest zaproxy bash -c "zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html"
+    compose -f docker-compose-zap.yml run --name zaptest zaproxy bash -c "zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html"
 }
 
 function shell_plus {
@@ -35,6 +34,11 @@ function shell_plus {
 function base {
      compose  build
 }
+
+function zaproxy {
+     compose -f docker-compose-zap.yml build
+}
+
 
 function dev_server {
     compose up --build

@@ -25,9 +25,9 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: ./run base
+          command: ./run zaproxy
       - run:
-          command: ./run test
+          command: ./run zaptest
       - run:
           command: ./run down
       - store_artifacts:
