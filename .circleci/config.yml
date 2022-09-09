@@ -22,7 +22,6 @@ jobs:
     docker:
       - image: 'owasp/zap2docker-bare'
     steps:
-      - run: apt-get install -y sudo
       - checkout
       - run: echo "deploy my app"
       # - store_artifacts:
