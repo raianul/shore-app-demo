@@ -20,7 +20,7 @@ commands:
 jobs:
   zap-scan:
     docker:
-      - image: 'owasp/zap2docker-stable'
+      - image: 'cimg/base:stable'
     steps:
       - checkout
       - run: echo "test my app"
