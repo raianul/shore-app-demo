@@ -20,7 +20,7 @@ commands:
 jobs:
   zap-scan:
     docker:
-      - image: 'owasp/zap2docker-stable'
+      - image: 'owasp/zap2docker-weekly'
     steps:
       - checkout
       - run:
