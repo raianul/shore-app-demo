@@ -20,8 +20,9 @@ commands:
 jobs:
   zap-scan:
     docker:
-      - image: 'owasp/zap2docker-weekly'
+      - image: 'owasp/zap2docker-stable'
     steps:
+      - run: apt-get install sudo
       - checkout
       - run:
           name: ZAP-SCAN
