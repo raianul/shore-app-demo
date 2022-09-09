@@ -22,7 +22,7 @@ def zap_started(zap, target):
     token = response.json().get("token")
     # print(f"Got Token - {token}")
 
-    pos_access_key = os.getenv('SHOREPAY_ACCESS_KEY')
+    pos_access_key = "534bb0ee6d340c1c4da67d6e" #os.getenv('SHOREPAY_ACCESS_KEY')
 
     # print("Removing Header.....")
     # zap.replacer.remove_rule(description="Authorization")

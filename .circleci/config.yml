@@ -2,6 +2,7 @@ version: 2.1
 setup: true
 orbs:
   path-filtering: circleci/path-filtering@0.0.1
+  slack: circleci/slack@4.1
 jobs:
   zap-scan:
     docker:
@@ -14,10 +15,14 @@ jobs:
             name: ZAP-SCAN
             command: |
               mkdir /zap/wrk
-              zap-api-scan.py -t $STAGING_URL -f openapi --hook=hook.py -r report.html
+              zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html
       - store_artifacts:
           path: /zap/wrk
           destination: zap-report
+      - slack/notify:
+          channel: ABCXYZ
+          event: fail
+          template: basic_fail_1
 
 workflows:
   version: 2
