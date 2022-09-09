@@ -20,10 +20,14 @@ commands:
 jobs:
   zap-scan:
     docker:
-      - image: 'cimg/base:stable'
+      - image: 'owasp/zap2docker-stable'
     steps:
       - checkout
-      - run: echo "test my app"
+      - run:
+          name: ZAP-SCAN
+          command: |
+            mkdir /zap/wrk
+            zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html
       - store_artifacts:
           path: /zap/wrk
           destination: zap-report
