@@ -1,61 +1,78 @@
- version: 2.1
- orbs:
-   slack: circleci/slack@4.0
- jobs:
-   # This "test" job will run on every commit (as per our workflow)
-   # We are ok with no notifications sent for this job.
-   test:
-     docker:
-       - image: cimg/base:stable
-     steps:
-       - run: echo "test my app"
-   # This "deploy" job will only run on a tagged commit (as per our workflow)
-   # We want to be alerted if this job fails and also when it succeeds.
-   deploy:
-     docker:
-       - image: cimg/base:stable
-     steps:
-       - run: echo "deploy my app"
-       # In the event the deployment has failed, alert the engineering team
+version: 2.1
+setup: true
+orbs:
+  path-filtering: circleci/path-filtering@0.0.1
+  slack: circleci/slack@4.1
+
+commands:
+  notify_slack_error:
+    steps:
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+
+  notify_slack_pass:
+    steps:
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+
+jobs:
+  zap-scan:
+    docker:
+      - image: 'owasp/zap2docker-stable'
+    steps:
+      - checkout
+      - run:
+          command: cp ./.env.example ./.env
+      - run:
+            name: ZAP-SCAN
+            command: |
+              mkdir /zap/wrk
+              zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html
+      - store_artifacts:
+          path: /zap/wrk
+          destination: zap-report
        - slack/notify:
            event: fail
            template: basic_fail_1
-           mentions: "@EngineeringTeam"
-       # When there is a successful deployment, send a notification with a different template.
        - slack/notify:
            event: pass
            template: success_tagged_deploy_1
- workflows:
-   test-and-deploy:
-     jobs:
-       # We want the test job to run on all commits, so we will list it with no filters.
-       - test
-       # When we are on a tagged commit (example "v1.0.0"), we want to also place the workflow on-hold, pending manual approval for deployment.
-       # We will also make use of the Slack orb's "on-hold" job to notify us to this on-hold workflow, making it easy to respond.
-       - slack/on-hold:
-          context:
-            - slack-secrets
-          requires:
-            - test
-          filters:
-            tags:
-              only: /^v.*/
-       # Jobs with the type of "approval" act as place holders to pause the workflow, the job name does not matter.
-       # Wait for both the test job and for the notification to send before pausing.
-       - pause_workflow:
-          type: approval
-          requires:
-            - test
-            - slack/on-hold
-          filters:
-            tags:
-              only: /^v.*/
-       # The deploy job will continue once the workflow has been manually approved.
-       - deploy:
-          context:
-            - slack-secrets
-          requires:
-            - pause_workflow
-          filters:
-            tags:
-              only: /^v.*/
+  
+
+workflows:
+  version: 2
+  circle-ci-workflow:
+    jobs:
+      - slack/on-hold:
+          context: slack-secrets
+      - zap-scan-hold:
+            requires:
+              - slack/on-hold
+            type: approval
+      - zap-scan:
+            requires:
+              - zap-scan-hold
+
+
+# version: 2.1
+# setup: true
+# jobs:
+#   scan:
+#     docker:
+#       - image: owasp/zap2docker-stable
+#     steps:
+#       - run:
+#             command: |
+#               mkdir /zap/wrk
+#               zap-api-scan.py -t https://8bdc-2a02-8109-a180-7448-1eb-199b-7246-3590.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r report.html
+#       - store_artifacts:
+#           path: /zap/wrk
+#           destination: zap-report
+
+# workflows:
+#   version: 2
+#   circle-ci-workflow:
+#     jobs:
+#       - scan
