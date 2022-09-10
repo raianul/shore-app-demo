@@ -23,10 +23,6 @@ function test {
     [ $status -eq 0 ]
 }
 
-function zaptest {
-    compose -f docker-compose-zap.yml run --name zaptest zaproxy bash -c "zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html"
-}
-
 function shell_plus {
     manage shell_plus --ipython
 }
@@ -35,8 +31,8 @@ function base {
      compose  build
 }
 
-function zaproxy {
-     compose -f docker-compose-zap.yml build
+function zaptest {
+     compose -f docker-compose-sap.yml build
 }
 
 

@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+  zaproxy:
+    image: owasp/zap2docker-stable
+    build:
+      context: .
+      dockerfile: Dockerfile-Sap
+    command: bash zap-cmd.sh
+    volumes:
+      - ./hook.py:/code/hook.py
+      - ./zap-cmd.sh:/code/zap-cmd.sh

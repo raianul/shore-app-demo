@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3'
 
 services:
     shore-app:
@@ -12,7 +12,7 @@ services:
             - DEBUG=False
         command: bash runner.sh
         ports:
-            - "5002:5000"
+            - "5000:5000"
         volumes:
             - .:/code
         depends_on:
@@ -35,14 +35,11 @@ services:
         volumes:
             - ./sql:/docker-entrypoint-initdb.d
     zaproxy:
-      container_name: zaproxy
-      image: owasp/zap2docker-weekly
-      command: zap.sh -daemon -port 8090 -host 0.0.0.0
-      ports:
-      # ZAP is running on 8090, we want it to be accessible by our tools        
-        - "8090:8090"
-      depends_on:
-        - shore-app
-      volumes:
-          - ./hook.py:/zap/hook.py
-
+        build:
+            context: .
+            dockerfile: Dockerfile-Sap
+        command: zap.sh -daemon -port 8090 -host 0.0.0.0 #zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py 
+        volumes:
+        - ./hook.py:/code/hook.py
+        - ./zap-cmd.sh:/code/zap-cmd.sh
+        tty: true
