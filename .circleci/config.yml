@@ -20,7 +20,7 @@ commands:
 jobs:
   zap-scan:
     machine:
-      image: ubuntu-2004:202010
+      image: ubuntu-2004:202104-01
     steps:
       - checkout
       - run:
