@@ -44,7 +44,7 @@ jobs:
                   "type": "section",
                   "text": {
                     "type": "mrkdwn",
-                    "text": "$CIRCLE_BUILD_URL - $CIRCLE_NODE_INDEX <https://google.com|this is a link>"
+                    "text": "<https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/$CIRCLE_NODE_INDEX/zap/report.html|Download Report>"
                   }
                 }
               ]
