@@ -20,10 +20,9 @@ commands:
 jobs:
   zap-scan:
     machine:
-      - image: ubuntu-2004:202010
+      image: ubuntu-2004:202010
     steps:
       - checkout
-      - setup_remote_docker
       - run:
           command: ./run zapserver
       - run:
