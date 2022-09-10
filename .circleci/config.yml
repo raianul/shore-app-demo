@@ -27,7 +27,7 @@ jobs:
       # - run:
       #     command: ./run zapserver
       - run:
-          command: ls -la #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
+          command: pwd #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
       # - run:
       #     command: ./run down
       - slack/notify:
