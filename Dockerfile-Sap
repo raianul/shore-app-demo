@@ -3,4 +3,5 @@ RUN pip3 install python-owasp-zap-v2.4
 
 RUN mkdir /zap/wrk
 
+COPY . ./app
 WORKDIR /zap

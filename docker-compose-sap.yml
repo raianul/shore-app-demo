@@ -5,6 +5,4 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-Sap
-    volumes:
-      - ./hook.py:/zap/hook.py
     tty: true
