@@ -1,6 +1,7 @@
 FROM python:3
-ENV PIP_ROOT_USER_ACTION=ignore
-RUN python3 -m venv /opt/venv
+RUN python -m venv /opt/venv
+# Enable venv
+ENV PATH="/opt/venv/bin:$PATH"
 WORKDIR /code
 RUN pip3 install python-owasp-zap-v2.4
 

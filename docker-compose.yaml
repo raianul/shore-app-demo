@@ -35,11 +35,7 @@ services:
         volumes:
             - ./sql:/docker-entrypoint-initdb.d
     zaproxy:
-        build:
-            context: .
-            dockerfile: Dockerfile-Sap
+        image: owasp/zap2docker-stable
         command: zap.sh -daemon -port 8090 -host 0.0.0.0 #zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py 
-        volumes:
-        - ./hook.py:/code/hook.py
-        - ./zap-cmd.sh:/code/zap-cmd.sh
-        tty: true
+        ports:
+            - "8090:8090"        

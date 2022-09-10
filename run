@@ -31,8 +31,8 @@ function base {
      compose  build
 }
 
-function zaptest {
-     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r test_report_$(date -u +'%Y%m%d').html
+function zapserver {
+    compose -f docker-compose-sap.yml build  #run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable ls -la #zap-api-scan.py -t https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r test_report_$(date -u +'%Y%m%d').html
 }
 
 
