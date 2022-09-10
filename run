@@ -32,7 +32,7 @@ function base {
 }
 
 function zaptest {
-     compose -f docker-compose-sap.yml up --build
+     docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account -f openapi --hook=/wrk/hook.py
 }
 
 
