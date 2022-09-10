@@ -32,11 +32,11 @@ jobs:
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
-      - run:
-          command: ./run down
       - store_artifacts:
           path: /zap/wrk
           destination: zap-report
+      - run:
+          command: ./run down
 
   
 
