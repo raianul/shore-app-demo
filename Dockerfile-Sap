@@ -1,7 +1,5 @@
-FROM python:3
-RUN python -m venv /opt/venv
-# Enable venv
-ENV PATH="/opt/venv/bin:$PATH"
-WORKDIR /code
+FROM owasp/zap2docker-stable
 RUN pip3 install python-owasp-zap-v2.4
 
+WORKDIR /zap
+RUN mkdir /zap/wrk

@@ -26,17 +26,19 @@ jobs:
       - setup_remote_docker
       - run:
           command: bash -c "./run zaptest" #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
+      - run:
+          command: ./run down
       - slack/notify:
           event: fail
           template: basic_fail_1
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
+      - store_test_results:
+          path: ./zap/
       - store_artifacts:
-          path: /zap/wrk
-          destination: zap-report
-      - run:
-          command: ./run down
+          path: ./zap/
+
 
   
 

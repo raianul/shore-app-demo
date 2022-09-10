@@ -2,7 +2,9 @@ version: '3.9'
 
 services:
   zaproxy:
-    image: owasp/zap2docker-stable
-    command: bash -c "ls -la"
+    build:
+      context: .
+      dockerfile: Dockerfile-Sap
     volumes:
       - ./hook.py:/zap/hook.py
+    tty: true
