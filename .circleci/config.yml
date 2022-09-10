@@ -19,8 +19,8 @@ commands:
 
 jobs:
   zap-scan:
-    docker:
-      - image: 'cimg/base:2022.01'
+    machine:
+      - image: ubuntu-2004:202010
     steps:
       - checkout
       - setup_remote_docker
