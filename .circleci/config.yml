@@ -23,13 +23,13 @@ jobs:
       - image: 'cimg/base:2022.01'
     steps:
       - checkout
-      # - setup_remote_docker
-      # - run:
-      #     command: ./run zapserver
+      - setup_remote_docker
       - run:
-          command: pwd #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
-      # - run:
-      #     command: ./run down
+          command: run zapserver
+      - run:
+          command: bash -c "ls -la && pwd" #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
+      - run:
+          command: ./run down
       - slack/notify:
           event: fail
           template: basic_fail_1
