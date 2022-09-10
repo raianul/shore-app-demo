@@ -25,7 +25,9 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: bash -c "./run zaptest" #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
+          command: ./run zapserver
+      - run:
+          command: ./run zaptest #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
       - run:
           command: ./run down
       - slack/notify:
