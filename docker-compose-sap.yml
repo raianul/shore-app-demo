@@ -3,6 +3,6 @@ version: '3.9'
 services:
   zaproxy:
     image: owasp/zap2docker-stable
-    command: bash -c "mkdir /zap/wrk && zap-api-scan.py -t https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account -f openapi --hook=hook.py -r report.html"
+    command: bash -c "ls -la"
     volumes:
       - ./hook.py:/zap/hook.py
