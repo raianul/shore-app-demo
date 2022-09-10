@@ -3,6 +3,4 @@ version: '3.9'
 services:
   zaproxy:
     image: owasp/zap2docker-stable
-    command: bash -c "mkdir /zap/wrk && zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=hook.py -r report.html"
-    volumes:
-      - ./hook.py:/zap/hook.py
+    command: bash -c "mkdir /zap/wrk && zap-api-scan.py -t https://payapi-staging.shore.com/api/account -f openapi --hook=/code/hook.py -r report.html"

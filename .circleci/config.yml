@@ -26,17 +26,18 @@ jobs:
       - setup_remote_docker
       - run:
           command: ./run zaptest
-      - run:
-          command: ./run down
-      - store_artifacts:
-          path: /zap/wrk
-          destination: zap-report
       - slack/notify:
           event: fail
           template: basic_fail_1
       - slack/notify:
           event: pass
           template: success_tagged_deploy_1
+      - run:
+          command: ./run down
+      - store_artifacts:
+          path: /zap/wrk
+          destination: zap-report
+
   
 
 workflows:
