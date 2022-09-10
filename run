@@ -37,7 +37,7 @@ function zapserver {
 
 function zaptest {
     mkdir -pv zap
-    compose run -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
+    compose run -v .:/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
     status=$?
     docker cp zaptest:/zap/wrk/report.html ./zap/report.html
     [ $status -eq 0 ]
