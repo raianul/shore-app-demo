@@ -32,7 +32,7 @@ function base {
 }
 
 function zaptest {
-     compose -f docker-compose-sap.yml build
+     compose -f docker-compose-sap.yml up --build
 }
 
 
