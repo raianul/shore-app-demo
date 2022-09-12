@@ -16,42 +16,6 @@ jobs:
       - run:
           command: ./run down
 
-  # zap-scan:
-  #   machine:
-  #     image: ubuntu-2004:202104-01
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         command: cp ./.env.example ./.env
-  #     - run:
-  #         command: ./run zapserver
-  #     - run:
-  #         command: ./run zaptest
-  #     - run:
-  #         command: ./run down
-  #     - slack/notify:
-  #         event: pass
-  #         template: basic_success_1
-  #     - slack/notify:
-  #         event: fail
-  #         template: basic_fail_1
-  #     - slack/notify:
-  #         event: fail
-  #         custom: |
-  #           {
-  #             "blocks": [
-  #               {
-  #                 "type": "section",
-  #                 "text": {
-  #                   "type": "mrkdwn",
-  #                   "text": "<https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/$CIRCLE_NODE_INDEX/zap/report.html|Download Report>"
-  #                 }
-  #               }
-  #             ]
-  #           }
-  #     - store_artifacts:
-  #         path: ./zap/
-
 workflows:
   version: 2
   circle-ci-workflow:
@@ -62,45 +26,3 @@ workflows:
           config-path: .circleci/continue_config.yml
           mapping: |
             /.* run-zap-test true
-
-# workflows:
-#   zap-scan-workflow:
-#     jobs:
-#       - slack/on-hold:
-#           context: slack-secrets
-#       - zap-scan-hold:
-#             requires:
-#               - slack/on-hold
-#             type: approval
-#       - zap-scan:
-#             requires:
-#               - zap-scan-hold
-#   build_and_release:
-#     jobs:
-#       - zap-scan:
-#           filters:
-#             branches:
-#               ignore: /.*/
-#             tags:
-#               only: /^release-.*/
-
-# version: 2.1
-# setup: true
-# jobs:
-#   scan:
-#     docker:
-#       - image: owasp/zap2docker-stable
-#     steps:
-#       - run:
-#             command: |
-#               mkdir /zap/wrk
-#               zap-api-scan.py -t https://8bdc-2a02-8109-a180-7448-1eb-199b-7246-3590.eu.ngrok.io/api/account -f openapi --hook=/zap/wrk/hook.py -r report.html
-#       - store_artifacts:
-#           path: /zap/wrk
-#           destination: zap-report
-
-# workflows:
-#   version: 2
-#   circle-ci-workflow:
-#     jobs:
-#       - scan
