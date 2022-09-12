@@ -42,7 +42,7 @@ workflows:
           base-revision: main
           config-path: .circleci/continue_config.yml
           mapping: |
-            zap/.* run-zap-test true
+            * run-zap-test true
 
 # workflows:
 #   zap-scan-workflow:
