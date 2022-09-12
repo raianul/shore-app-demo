@@ -66,19 +66,14 @@ workflows:
       - zap-scan:
             requires:
               - zap-scan-hold
-  daily-run-workflow:
-    triggers:
-      - schedule:
-          # Every day, 0421Z.
-          cron: "21 4 * * *"
+  build_and_release:
+    jobs:
+      - zap-scan:
           filters:
             branches:
-              only:
-                - main
-    jobs:
-      - slack/on-hold:
-          context: slack-secrets
-
+              ignore: /.*/
+            tags:
+              only: /^release-.*/
 
 # version: 2.1
 # setup: true
