@@ -15,11 +15,8 @@ function manage {
 }
 
 function test {
-    mkdir -pv test_results
-    compose run --name test shore-app-demo bash -c "python -m pytest --junitxml=/app/junit.xml -p no:cacheprovider --cov=/app /app --cov-report html:/app/coverage_shorepay --cov-branch" "$@"
+    compose run --name test shore-app bash -c "python -m pytest" "$@"
     status=$?
-    docker cp test:/app/coverage_shoreapp ./test_results/coverage_shoreapp
-    docker cp test:/app/junit.xml ./test_results/junit.xml
     [ $status -eq 0 ]
 }
 
@@ -38,6 +35,7 @@ function zapserver {
 }
 
 function zaptest {
+    cp .env.example .env
     source .env
     mkdir -pv zap
     compose -f docker-compose-sap.yml run -e SHOREPAY_ACCESS_KEY=$SHOREPAY_ACCESS_KEY -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t $TARGET_ZAP_URL -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
