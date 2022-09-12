@@ -1,0 +1,61 @@
+version: 2.1
+orbs:
+  slack: circleci/slack@4.1.4
+
+parameters:
+  run-zap-test:
+    type: boolean
+    default: false
+
+
+jobs:
+  zap-scan:
+    machine:
+      image: ubuntu-2004:202104-01
+    steps:
+      - checkout
+      - run:
+          command: cp ./.env.example ./.env
+      - run:
+          command: ./run zapserver
+      - run:
+          command: ./run zaptest
+      - run:
+          command: ./run down
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: fail
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "<https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/$CIRCLE_NODE_INDEX/zap/report.html|Download Report>"
+                  }
+                }
+              ]
+            }
+      - store_artifacts:
+          path: ./zap/
+
+
+workflows:
+  zap-scan-workflow:
+    when: << pipeline.parameters.run-zap-test >>
+    jobs:
+      - slack/on-hold:
+          context: slack-secrets
+      - zap-scan-hold:
+            requires:
+              - slack/on-hold
+            type: approval
+      - zap-scan:
+            requires:
+              - zap-scan-hold
