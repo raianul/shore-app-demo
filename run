@@ -38,7 +38,7 @@ function zapserver {
 }
 
 function zaptest {
-    source .env
+    # source .env
     mkdir -pv zap
     echo $SHOREPAY_ACCESS_KEY
     echo $TARGET_ZAP_URL
