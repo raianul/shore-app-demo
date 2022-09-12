@@ -26,11 +26,11 @@ jobs:
       - run:
           command: cp ./.env.example ./.env
       - run:
+          command: source ./.env
+      - run:
           command: ./run zapserver
       - run:
           command: ./run zaptest
-          environment:
-            TARGET_ZAP_URL: https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account
       - run:
           command: ./run down
       - slack/notify:
@@ -57,9 +57,6 @@ jobs:
           path: ./zap/
       - store_artifacts:
           path: ./zap/
-
-
-  
 
 workflows:
   zap-scan-workflow:
