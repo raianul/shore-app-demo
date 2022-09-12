@@ -28,7 +28,9 @@ jobs:
       - run:
           command: ./run zapserver
       - run:
-          command: ./run zaptest #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
+          command: ./run zaptest
+          environment:
+            TARGET_ZAP_URL: https://ea16-2a02-8109-a180-7448-b942-b815-564-6e6e.eu.ngrok.io/api/account
       - run:
           command: ./run down
       - slack/notify:
