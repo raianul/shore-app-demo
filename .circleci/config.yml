@@ -24,6 +24,8 @@ jobs:
     steps:
       - checkout
       - run:
+          command: cp ./.env.example ./.env
+      - run:
           command: ./run zapserver
       - run:
           command: ./run zaptest #if [[ \$? -eq 0 ]] ; then exit 0 ; else exit 1 ; fi
