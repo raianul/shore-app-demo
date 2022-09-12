@@ -5,4 +5,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-Sap
+    env_file:
+      - .env
     tty: true
