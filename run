@@ -40,7 +40,7 @@ function zapserver {
 function zaptest {
     source .env
     mkdir -pv zap
-    compose -f docker-compose-sap.yml run --env SHOREPAY_ACCESS_KEY=$SHOREPAY_ACCESS_KEY -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t $TARGET_ZAP_URL -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
+    compose -f docker-compose-sap.yml run -e SHOREPAY_ACCESS_KEY=$SHOREPAY_ACCESS_KEY -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t $TARGET_ZAP_URL -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
     status=$?
     docker cp zaptest:/zap/wrk/report.html ./zap/report.html
     [ $status -eq 0 ]
