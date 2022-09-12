@@ -26,8 +26,6 @@ jobs:
       - run:
           command: cp ./.env.example ./.env
       - run:
-          command: source ./.env
-      - run:
           command: ./run zapserver
       - run:
           command: ./run zaptest
