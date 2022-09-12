@@ -37,7 +37,8 @@ function zapserver {
 
 function zaptest {
     mkdir -pv zap
-    compose run -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t $TARGET_ZAP_URL -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
+    compose run -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "echo $TARGET_ZAP_URL"
+    # compose run -v $(pwd):/zap/wrk/:rw --name zaptest zaproxy bash -c "zap-api-scan.py -t $TARGET_ZAP_URL -f openapi --hook=/zap/wrk/hook.py -r report.html" "$@"
     status=$?
     docker cp zaptest:/zap/wrk/report.html ./zap/report.html
     [ $status -eq 0 ]
