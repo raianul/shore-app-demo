@@ -2,21 +2,6 @@ version: 2.1
 setup: true
 orbs:
   path-filtering: circleci/path-filtering@0.0.1
-  continuation: circleci/continuation@0.1.2
-
-commands:
-  notify_slack_error:
-    steps:
-      - slack/notify:
-          event: fail
-          template: basic_fail_1
-
-  notify_slack_pass:
-    steps:
-      - slack/notify:
-          event: pass
-          template: basic_success_1
-
 jobs:
   build-test-api:
     docker:
@@ -31,7 +16,41 @@ jobs:
       - run:
           command: ./run down
 
-
+  # zap-scan:
+  #   machine:
+  #     image: ubuntu-2004:202104-01
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         command: cp ./.env.example ./.env
+  #     - run:
+  #         command: ./run zapserver
+  #     - run:
+  #         command: ./run zaptest
+  #     - run:
+  #         command: ./run down
+  #     - slack/notify:
+  #         event: pass
+  #         template: basic_success_1
+  #     - slack/notify:
+  #         event: fail
+  #         template: basic_fail_1
+  #     - slack/notify:
+  #         event: fail
+  #         custom: |
+  #           {
+  #             "blocks": [
+  #               {
+  #                 "type": "section",
+  #                 "text": {
+  #                   "type": "mrkdwn",
+  #                   "text": "<https://output.circle-artifacts.com/output/job/$CIRCLE_WORKFLOW_JOB_ID/artifacts/$CIRCLE_NODE_INDEX/zap/report.html|Download Report>"
+  #                 }
+  #               }
+  #             ]
+  #           }
+  #     - store_artifacts:
+  #         path: ./zap/
 
 workflows:
   version: 2
@@ -39,10 +58,10 @@ workflows:
     jobs:
       - build-test-api
       - path-filtering/filter:
-          base-revision: main
+          base-revision: master
           config-path: .circleci/continue_config.yml
           mapping: |
-            * run-zap-test true
+            zap/.* run-zap-test true
 
 # workflows:
 #   zap-scan-workflow:
