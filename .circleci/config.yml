@@ -51,8 +51,6 @@ jobs:
                 }
               ]
             }
-      - store_test_results:
-          path: ./zap/
       - store_artifacts:
           path: ./zap/
 
@@ -68,6 +66,14 @@ workflows:
       - zap-scan:
             requires:
               - zap-scan-hold
+  zap-test-workflow:
+    jobs:
+      - slack/on-hold:
+          context: slack-secrets
+      - zap-scan-hold:
+            requires:
+              - slack/on-hold
+            type: approval
 
 
 # version: 2.1
