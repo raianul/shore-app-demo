@@ -2,6 +2,7 @@ version: 2.1
 setup: true
 orbs:
   path-filtering: circleci/path-filtering@0.0.1
+  continuation: circleci/continuation@0.1.2
 
 commands:
   notify_slack_error:
@@ -38,7 +39,7 @@ workflows:
     jobs:
       - build-test-api
       - path-filtering/filter:
-          base-revision: main
+          base-revision: master
           config-path: .circleci/continue_config.yml
           mapping: |
             zap/.* run-zap-test true
