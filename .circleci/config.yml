@@ -63,7 +63,6 @@ workflows:
 
   zap-scan-workflow:
     when:
-      and:
         - equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - slack/on-hold:
