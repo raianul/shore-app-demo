@@ -24,8 +24,6 @@ jobs:
       - run:
           command: cp ./.env.example ./.env
       - run:
-          command: ./run zapserver
-      - run:
           command: ./run zaptest
       - run:
           command: ./run down
@@ -54,16 +52,14 @@ jobs:
 
 workflows:
   version: 2
-  circle-ci-workflow:
-    when:
-      not:
-        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-    jobs:
-      - build-test-api
+  # circle-ci-workflow:
+  #   when:
+  #     not:
+  #       equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+  #   jobs:
+  #     - build-test-api
 
   zap-scan-workflow:
-    when:
-      equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - zap-scan
 
