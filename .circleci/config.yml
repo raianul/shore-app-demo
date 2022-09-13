@@ -18,7 +18,7 @@ jobs:
 
   zap-scan:
     machine:
-      image: ubuntu-2004:202104-01
+      image: 'cimg/base:2022.01'
     steps:
       - checkout
       - run:
@@ -52,16 +52,14 @@ jobs:
 
 workflows:
   version: 2
-  circle-ci-workflow:
-    when:
-      not:
-        equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
-    jobs:
-      - build-test-api
+  # circle-ci-workflow:
+  #   when:
+  #     not:
+  #       equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
+  #   jobs:
+  #     - build-test-api
 
   zap-scan-workflow:
-    when:
-      equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
       - zap-scan
 
