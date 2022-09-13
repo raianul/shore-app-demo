@@ -65,15 +65,7 @@ workflows:
     when:
       equal: [ scheduled_pipeline, << pipeline.trigger_source >> ]
     jobs:
-      - slack/on-hold:
-          context: slack-secrets
-      - zap-scan-hold:
-            requires:
-              - slack/on-hold
-            type: approval
-      - zap-scan:
-            requires:
-              - zap-scan-hold
+      - zap-scan
 
 
 # version: 2.1
