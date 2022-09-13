@@ -1,7 +1,7 @@
 version: 2.1
 setup: true
 orbs:
-  path-filtering: circleci/path-filtering@0.0.1
+  slack: circleci/slack@4.1.4
 jobs:
   build-test-api:
     docker:
@@ -61,7 +61,6 @@ workflows:
     jobs:
       - build-test-api
 
-workflows:
   zap-scan-workflow:
     when:
       and:
