@@ -17,7 +17,7 @@ jobs:
           command: ./run down
 
   zap-scan:
-    machine:
+    docker:
       image: 'cimg/base:2022.01'
     steps:
       - checkout
